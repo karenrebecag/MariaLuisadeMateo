@@ -48,14 +48,40 @@ const columns = Array.from({ length: 10 }, (_, colIdx) => {
 export function MasonryGallery() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
   const { navigateWithTransition } = usePageTransitionNav();
 
   useEffect(() => {
     const wrap = wrapRef.current;
     const track = trackRef.current;
+    const intro = introRef.current;
 
-    if (!wrap || !track) return;
+    if (!wrap || !track || !intro) return;
 
+    // ── Reveal animation: stagger intro panel elements on enter ───
+    const revealEls = Array.from(
+      intro.querySelectorAll<HTMLElement>("[data-reveal]")
+    );
+
+    gsap.set(revealEls, { y: 48, autoAlpha: 0 });
+
+    const revealST = ScrollTrigger.create({
+      trigger: wrap,
+      start: "top 78%",
+      once: true,
+      onEnter: () => {
+        gsap.to(revealEls, {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.9,
+          ease: "power4.inOut",
+          stagger: 0.13,
+          onComplete: () => { gsap.set(revealEls, { clearProps: "all" }); },
+        });
+      },
+    });
+
+    // ── Horizontal scroll (desktop only) ─────────────────────────
     let initialized = false;
 
     function initScroll() {
@@ -88,6 +114,7 @@ export function MasonryGallery() {
 
     return () => {
       clearTimeout(initTimer);
+      revealST.kill();
       ScrollTrigger.getAll()
         .filter((s) => s.trigger === wrap)
         .forEach((s) => s.kill());
@@ -96,13 +123,64 @@ export function MasonryGallery() {
   }, []);
 
   return (
-    <section id="gallery" className="pt-24 md:pt-28">
+    <section id="gallery" className="noise-bg">
       {/* Horizontal scroll wrapper */}
       <div ref={wrapRef} className="overflow-hidden">
         <div
           ref={trackRef}
           className="flex w-max gap-3 p-3 md:gap-4 md:p-4"
         >
+          {/* Intro panel — presentación de María Luisa */}
+          <div
+            ref={introRef}
+            className="relative flex w-[min(90vw,500px)] shrink-0 flex-col justify-center gap-8 px-8 md:w-[480px] md:px-12"
+            style={{ height: "100vh" }}
+          >
+            {/* Circular portrait */}
+            <div
+              data-reveal
+              className="relative h-44 w-44 overflow-hidden rounded-full ring-1 ring-neutral-200 dark:ring-neutral-700"
+            >
+              <Image
+                src="https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/maria-luisa-1.webp"
+                alt="María Luisa de Mateo"
+                fill
+                sizes="176px"
+                className="object-cover object-top"
+                priority
+              />
+            </div>
+
+            {/* Name block */}
+            <div data-reveal className="flex flex-col gap-3">
+              <p className="font-sans text-sm uppercase tracking-[0.28em] text-neutral-400 dark:text-neutral-500">
+                Pintura · México
+              </p>
+              <h2 className="font-serif text-5xl leading-[1.02] tracking-tight text-primary md:text-6xl">
+                María Luisa<br />de Mateo
+              </h2>
+            </div>
+
+            {/* Bio */}
+            <p
+              data-reveal
+              className="max-w-[26ch] font-sans text-lg leading-relaxed text-neutral-500 dark:text-neutral-400"
+            >
+              Obra que vive en el límite entre la figura y lo que
+              la memoria retiene de ella.
+            </p>
+
+            {/* Scroll hint */}
+            <div
+              data-reveal
+              className="absolute bottom-10 left-8 flex items-center gap-2.5 md:left-12"
+            >
+              <span className="animate-bounce inline-block font-sans text-sm uppercase tracking-[0.25em] text-neutral-400 dark:text-neutral-500">
+                ↓ desplaza para recorrer
+              </span>
+            </div>
+          </div>
+
           {columns.map((col, colIdx) => (
             <div key={colIdx} className="flex w-[260px] shrink-0 flex-col gap-3 md:w-[300px] md:gap-4">
               {col.map((item, itemIdx) => (

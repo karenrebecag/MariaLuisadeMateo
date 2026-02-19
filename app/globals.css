@@ -241,6 +241,26 @@ h2 { font-size: var(--type-h2); }
 h3 { font-size: var(--type-h3); }
 h4 { font-size: var(--type-h4); }
 
+/* ── Noise background utility ─────────────────────────────────── */
+/* Add class="noise-bg" to any section that needs a light grain.   */
+/* One ::before definition, reused via class — never duplicated.   */
+.noise-bg {
+  position: relative;
+  isolation: isolate;
+}
+
+.noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.2;
+}
+
 /* ── Section Padding utility ── */
 .section-padding {
   padding-top: var(--section-py);
@@ -295,6 +315,71 @@ html.lenis, html.lenis body {
 ::selection {
   background: var(--primary);
   color: #ffffff;
+}
+
+/* =============================================
+   Custom Cursor
+   ============================================= */
+
+/* Hide native cursor everywhere */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+.cursor {
+  z-index: 9999;
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 100em;
+  width: 1em;
+  height: 1em;
+  transition:
+    background-color .375s cubic-bezier(.625, .05, 0, 1),
+    border-color .375s cubic-bezier(.625, .05, 0, 1),
+    height .375s cubic-bezier(.625, .05, 0, 1),
+    width .375s cubic-bezier(.625, .05, 0, 1);
+  position: fixed;
+  inset: 0% auto auto 0%;
+  pointer-events: none;
+}
+
+/* Expand on interactive hover — red sections */
+body:has(a:hover) .cursor,
+body:has(button:hover) .cursor,
+body:has([data-cursor]:hover) .cursor {
+  width: 3em;
+  height: 3em;
+  background-color: rgba(196, 30, 30, 0.3);
+}
+
+/* White cursor in dark sections (stats strip + footer) */
+body:has(#stats:hover) .cursor,
+body:has(footer:hover) .cursor {
+  background-color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* White expanded in dark sections */
+body:has(#stats:hover):has(a:hover) .cursor,
+body:has(#stats:hover):has(button:hover) .cursor,
+body:has(#stats:hover):has([data-cursor]:hover) .cursor,
+body:has(footer:hover):has(a:hover) .cursor,
+body:has(footer:hover):has(button:hover) .cursor,
+body:has(footer:hover):has([data-cursor]:hover) .cursor {
+  width: 3em;
+  height: 3em;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: #ffffff;
+}
+
+/* Hide on touch devices, restore native cursor */
+@media (hover: none) and (pointer: coarse) {
+  .cursor {
+    display: none;
+  }
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
 }
 
 /* =============================================
@@ -618,6 +703,18 @@ html.lenis, html.lenis body {
   background-color: var(--foreground);
 }
 
+/* Shared texture overlay — reutilizada en stats strip y footer */
+.photo-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/edited-photo.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.06;
+  pointer-events: none;
+}
+
 /* Layer 2: image as texture on top of the red, opacity controls blend depth */
 .sticky-footer__container::before {
   content: '';
@@ -626,7 +723,7 @@ html.lenis, html.lenis body {
   background-image: url('https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/edited-photo.webp');
   background-size: cover;
   background-position: center;
-  opacity: 0.08;
+  opacity: 0.04;
   pointer-events: none;
 }
 
@@ -677,10 +774,9 @@ html.lenis, html.lenis body {
 
 .sticky-footer__copy {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.72em;
+  font-size: 0.22em;
   font-weight: 400;
   letter-spacing: 0.05em;
-  text-transform: uppercase;
   margin: 0;
 }
 
@@ -846,5 +942,142 @@ html.lenis, html.lenis body {
 @media screen and (max-width: 767px) {
   .draggable-marquee__item {
     width: 11em;
+  }
+}
+
+/* ── Available Works — Layout Grid Flip ───────────────────────── */
+
+.aw-buttons {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  flex-shrink: 0;
+}
+
+.aw-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.625em 1em;
+  border-radius: 100em;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.aw-btn.is--active {
+  background-color: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
+.aw-btn__icon {
+  width: 0.875em;
+  flex-shrink: 0;
+}
+
+.aw-btn__label {
+  font-size: 0.75em;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.aw-grid__collection {
+  position: relative;
+}
+
+.aw-grid__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--aw-gap);
+  position: relative;
+}
+
+.aw-grid__item {
+  width: calc((100% - (var(--aw-cols) - 1) * var(--aw-gap)) / var(--aw-cols));
+  will-change: transform;
+  position: relative;
+  cursor: pointer;
+}
+
+.aw-grid__card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.aw-grid__card-visual {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  border-radius: 0.375em;
+  overflow: hidden;
+}
+
+.aw-grid__card-img {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.aw-grid__item:hover .aw-grid__card-img {
+  transform: scale(1.04);
+}
+
+.aw-grid__card-details {
+  margin-top: 0.875em;
+  height: 3.5em;
+  overflow: hidden;
+}
+
+.aw-grid__card-title {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.125em;
+  line-height: 1.25;
+  margin: 0 0 0.25em;
+  color: var(--card-foreground);
+  transition: font-size 0.65s cubic-bezier(0.65, 0, 0.1, 1);
+}
+
+.aw-grid__card-sub {
+  font-size: 0.8125em;
+  color: var(--muted-foreground);
+  margin: 0;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+/* Large layout — 3 columns */
+[data-layout-status="large"].aw-grid {
+  --aw-cols: 3;
+  --aw-gap: 1.5em;
+}
+
+/* Small layout — 5 columns */
+[data-layout-status="small"].aw-grid {
+  --aw-cols: 5;
+  --aw-gap: 1em;
+}
+
+[data-layout-status="small"].aw-grid .aw-grid__card-title {
+  font-size: 0.875em;
+}
+
+[data-layout-status="small"].aw-grid .aw-grid__card-sub {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 767px) {
+  [data-layout-status="large"].aw-grid {
+    --aw-cols: 2;
+    --aw-gap: 1em;
+  }
+
+  [data-layout-status="small"].aw-grid {
+    --aw-cols: 3;
+    --aw-gap: 0.75em;
   }
 }

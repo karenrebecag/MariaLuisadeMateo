@@ -51,7 +51,7 @@
   z-index: 1;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25em 1.5em 1.25em 1.625em;
+  padding: 1em 1.5em 1em 1.625em;
   display: flex;
   position: relative;
 }
@@ -336,9 +336,17 @@
 @media screen and (max-width: 767px) {
   .centered-nav {
     width: auto;
-    top: 1em;
-    left: 1em;
-    right: 1em;
+    top: 0.75em;
+    left: 0.75em;
+    right: 0.75em;
     transform: none;
+  }
+
+  .centered-nav__logo-wrap {
+    width: 4.5em !important;
+  }
+
+  .centered-nav__header {
+    padding: 0.75em 1em 0.75em 1.125em;
   }
 }

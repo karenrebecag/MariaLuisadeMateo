@@ -25,27 +25,38 @@ export async function InstagramStrip() {
   const items: MarqueeItem[] = posts ?? FALLBACK_ITEMS;
 
   return (
-    <section id="instagram" aria-label="Instagram de María Luisa de Mateo">
-      {/* Section header — follows page horizontal rhythm */}
+    <section id="instagram" className="noise-bg" aria-label="Instagram de María Luisa de Mateo">
+      {/* Section header */}
       <div className="section-padding pb-0">
         <div className="max-width">
-          <div className="flex items-end justify-between">
-            <div>
-              <Text variant="label" className="mb-4 text-primary">
-                En Instagram
+          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+            {/* Left — heading block */}
+            <div className="flex flex-col gap-3">
+              <Text variant="label" className="text-primary">
+                Instagram
               </Text>
-              <p className="font-serif italic text-[var(--type-h3)] leading-tight text-card-foreground">
-                @{INSTAGRAM_USERNAME}
+              <h2 className="font-serif text-[var(--type-h2)] leading-tight tracking-tight text-card-foreground">
+                Del taller
+              </h2>
+              <p className="max-w-[38ch] font-sans text-base leading-relaxed text-muted-foreground">
+                Estudios, bocetos y obra en proceso desde su taller en México.
               </p>
             </div>
-            <Link
-              href={`https://www.instagram.com/${INSTAGRAM_USERNAME}/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-1 text-sm font-medium text-primary underline-offset-4 hover:underline"
-            >
-              Ver perfil →
-            </Link>
+
+            {/* Right — handle + link */}
+            <div className="flex flex-col items-start gap-1 md:items-end">
+              <Link
+                href={`https://www.instagram.com/${INSTAGRAM_USERNAME}/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-serif italic text-xl leading-tight text-card-foreground underline-offset-4 hover:underline"
+              >
+                @{INSTAGRAM_USERNAME}
+              </Link>
+              <span className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
+                Seguir →
+              </span>
+            </div>
           </div>
         </div>
       </div>

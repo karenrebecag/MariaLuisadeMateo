@@ -5,6 +5,7 @@ import { ScrollProgressBar } from "@/src/components/atoms/ScrollProgressBar";
 import { Header } from "@/src/components/organisms/Header";
 import { MasonryGallery } from "@/src/components/organisms/MasonryGallery";
 import { Bio } from "@/src/components/organisms/Bio";
+import { AvailableWorks } from "@/src/components/organisms/AvailableWorks";
 import { InstagramStrip } from "@/src/components/organisms/InstagramStrip";
 import { ContactForm } from "@/src/components/organisms/ContactForm";
 import { Footer } from "@/src/components/organisms/Footer";
@@ -18,6 +19,7 @@ export default function Home() {
         <main>
           <MasonryGallery />
           <Bio />
+          <AvailableWorks />
           <Suspense fallback={null}>
             <InstagramStrip />
           </Suspense>

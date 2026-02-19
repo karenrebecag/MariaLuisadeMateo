@@ -1,21 +1,53 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
+import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 
 const stats = [
   { value: "UNAM", label: "Historia del Arte" },
   { value: "UC Berkeley", label: "Posgrado" },
   { value: "30+", label: "Exposiciones" },
-  { value: "Oleo", label: "Tecnica Principal" },
+  { value: "Óleo", label: "Técnica principal" },
 ];
 
 export function Bio() {
   const sectionRef = useSplitReveal();
+  const statsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = statsRef.current;
+    if (!container) return;
+
+    const items = Array.from(
+      container.querySelectorAll<HTMLElement>("[data-stat]")
+    );
+
+    gsap.set(items, { y: 48, autoAlpha: 0 });
+
+    const st = ScrollTrigger.create({
+      trigger: container,
+      start: "top 82%",
+      once: true,
+      onEnter: () => {
+        gsap.to(items, {
+          y: 0,
+          autoAlpha: 1,
+          duration: 0.85,
+          ease: "power4.inOut",
+          stagger: 0.1,
+          onComplete: () => { gsap.set(items, { clearProps: "all" }); },
+        });
+      },
+    });
+
+    return () => st.kill();
+  }, []);
 
   return (
-    <section id="bio" className="section-padding">
+    <section id="bio" className="noise-bg section-padding pb-0">
       <div ref={sectionRef} className="max-width">
         <div>
           <Text variant="label" className="mb-4 text-primary">
@@ -51,17 +83,47 @@ export function Bio() {
           </div>
         </div>
 
-        <Divider className="my-16" />
+        <Divider className="mt-16 mb-0" />
+      </div>
 
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+      {/* Full-bleed red stats block */}
+      <div
+        id="stats"
+        ref={statsRef}
+        className="photo-texture relative bg-primary overflow-hidden"
+        style={{
+          marginLeft: "calc(-1 * var(--section-px))",
+          marginRight: "calc(-1 * var(--section-px))",
+        }}
+      >
+        <div
+          className="max-width grid grid-cols-2 gap-px md:grid-cols-4"
+          style={{ padding: "var(--section-py) var(--section-px)" }}
+        >
           {stats.map((stat) => (
-            <div key={stat.label}>
-              <Text as="span" variant="stat">
+            <div
+              key={stat.label}
+              data-stat
+              className="flex flex-col gap-3 px-4 py-2 first:pl-0"
+            >
+              <span
+                className="font-serif italic text-white leading-none"
+                style={{
+                  fontSize: "var(--type-h3)",
+                  letterSpacing: "var(--tracking-tight)",
+                }}
+              >
                 {stat.value}
-              </Text>
-              <Text variant="caption" className="mt-2">
+              </span>
+              <p
+                className="text-white/65 leading-snug"
+                style={{
+                  fontSize: "var(--type-small)",
+                  letterSpacing: "var(--tracking-normal)",
+                }}
+              >
                 {stat.label}
-              </Text>
+              </p>
             </div>
           ))}
         </div>
