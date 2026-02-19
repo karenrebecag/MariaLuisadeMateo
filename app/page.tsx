@@ -3,7 +3,7 @@ import { PageTransition } from "@/src/components/templates/PageTransition";
 import { SmoothScrollWrapper } from "@/src/components/templates/SmoothScrollWrapper";
 import { ScrollProgressBar } from "@/src/components/atoms/ScrollProgressBar";
 import { Header } from "@/src/components/organisms/Header";
-import { MasonryGallery } from "@/src/components/organisms/MasonryGallery";
+import { AdaptiveGallery } from "@/src/components/organisms/AdaptiveGallery";
 import { Bio } from "@/src/components/organisms/Bio";
 import { AvailableWorks } from "@/src/components/organisms/AvailableWorks";
 import { InstagramStrip } from "@/src/components/organisms/InstagramStrip";
@@ -17,7 +17,7 @@ export default function Home() {
         <ScrollProgressBar />
         <Header />
         <main>
-          <MasonryGallery />
+          <AdaptiveGallery />
           <Bio />
           <AvailableWorks />
           <Suspense fallback={null}>
