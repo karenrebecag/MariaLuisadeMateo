@@ -130,7 +130,7 @@ export function MasonryGallery() {
       <div ref={wrapRef} className="h-screen overflow-x-auto overflow-y-hidden md:h-auto md:overflow-hidden">
         <div
           ref={trackRef}
-          className="flex h-full w-max gap-3 p-3 touch-pan-x md:h-auto md:gap-4 md:p-4"
+          className="flex h-full w-max gap-3 p-3 md:h-auto md:gap-4 md:p-4"
         >
           {/* Intro panel — presentación de María Luisa */}
           <div
