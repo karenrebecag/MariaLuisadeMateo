@@ -5,6 +5,8 @@ import { gsap } from "@/src/lib/gsap-registry";
 
 export function CustomCursor() {
   useEffect(() => {
+    if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
+
     gsap.set(".cursor", { xPercent: -50, yPercent: -50, autoAlpha: 0 });
 
     const xTo = gsap.quickTo(".cursor", "x", { duration: 0.6, ease: "power3" });
