@@ -8,6 +8,7 @@ import { SplitText } from "gsap/SplitText";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, Observer, Flip, SplitText);
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 export { gsap, ScrollTrigger, Observer, Flip, SplitText };

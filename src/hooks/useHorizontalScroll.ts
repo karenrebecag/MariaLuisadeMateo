@@ -23,17 +23,17 @@ export function useHorizontalScroll({ panelSelector }: UseHorizontalScrollOption
         const panels = gsap.utils.toArray<HTMLElement>(panelSelector, track);
         if (panels.length === 0) return;
 
-        const totalWidth = panels.reduce((acc, panel) => acc + panel.offsetWidth, 0);
-        const scrollDistance = totalWidth - window.innerWidth;
+        const getScrollDistance = () => track.scrollWidth - window.innerWidth;
 
         gsap.to(track, {
-          x: () => -scrollDistance,
+          x: () => -getScrollDistance(),
           ease: "none",
           scrollTrigger: {
             trigger: container,
             pin: true,
+            anticipatePin: 1,
             scrub: 1,
-            end: () => `+=${scrollDistance}`,
+            end: () => `+=${getScrollDistance()}`,
             invalidateOnRefresh: true,
           },
         });

@@ -6,7 +6,7 @@ import "./globals.css";
 import "./navigation.css";
 
 export const metadata: Metadata = {
-  title: "Maria Luisa de Mateo | Pintura",
+  title: "Maria Luisa de Mateo ",
   description:
     "Portafolio de arte de Maria Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta.",
 };
