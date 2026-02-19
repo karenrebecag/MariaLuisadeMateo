@@ -17,55 +17,79 @@ export function Logo({ className }: LogoProps) {
     if (!svg || animated.current) return;
 
     const paths = svg.querySelectorAll<SVGPathElement>("path");
+    const lengths: number[] = [];
 
-    // Measure each path length and set up initial state
-    paths.forEach((path) => {
-      const length = path.getTotalLength();
-      // Start hidden: stroke drawn at 0%, fill transparent
+    // Measure each path and set initial hidden state
+    paths.forEach((path, i) => {
+      const len = path.getTotalLength();
+      lengths[i] = len;
       gsap.set(path, {
         fill: "transparent",
         stroke: "currentColor",
-        strokeWidth: 1.5,
-        strokeDasharray: length,
-        strokeDashoffset: length,
+        strokeWidth: 1.2,
+        strokeDasharray: len,
+        strokeDashoffset: len,
+        opacity: 1,
       });
     });
 
-    function onTransitionComplete() {
+    function runAnimation() {
       if (animated.current) return;
       animated.current = true;
 
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ defaults: { ease: "none" } });
 
-      // Phase 1: Draw the stroke
-      tl.to(paths, {
-        strokeDashoffset: 0,
-        duration: 1.2,
-        ease: "power2.inOut",
-        stagger: { each: 0.15, from: "start" },
+      // Phase 1: Draw stroke smoothly — each path individually for fluid feel
+      paths.forEach((path, i) => {
+        const offset = i * 0.2; // stagger between paths
+        tl.to(
+          path,
+          {
+            strokeDashoffset: 0,
+            duration: 1.6,
+            ease: "power3.out",
+          },
+          offset
+        );
       });
 
-      // Phase 2: Fill in and fade out stroke
-      tl.to(
-        paths,
-        {
-          fill: "currentColor",
-          strokeWidth: 0,
-          duration: 0.6,
-          ease: "power1.inOut",
-          stagger: { each: 0.08, from: "start" },
-        },
-        "-=0.3"
-      );
+      // Phase 2: Crossfade — fill fades in while stroke fades out
+      // Starts while the last path is still drawing for seamless blend
+      const fillStart = 0.8;
+      paths.forEach((path, i) => {
+        const offset = fillStart + i * 0.1;
+        tl.to(
+          path,
+          {
+            fill: "currentColor",
+            duration: 0.8,
+            ease: "power2.inOut",
+          },
+          offset
+        );
+        tl.to(
+          path,
+          {
+            strokeWidth: 0,
+            duration: 1,
+            ease: "power2.inOut",
+          },
+          offset
+        );
+      });
     }
 
-    window.addEventListener("pageTransitionComplete", onTransitionComplete);
+    // Listen for page transition complete event
+    window.addEventListener("pageTransitionComplete", runAnimation);
+
+    // Fallback: if event never fires (race condition), animate after timeout
+    const fallback = setTimeout(() => {
+      runAnimation();
+    }, 1500);
 
     return () => {
-      window.removeEventListener(
-        "pageTransitionComplete",
-        onTransitionComplete
-      );
+      window.removeEventListener("pageTransitionComplete", runAnimation);
+      clearTimeout(fallback);
     };
   }, []);
 

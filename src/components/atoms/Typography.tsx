@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-interface HeadingProps {
+interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement> {
   as?: "h1" | "h2" | "h3" | "h4";
   children: React.ReactNode;
   className?: string;
@@ -13,18 +13,19 @@ const headingStyles: Record<string, string> = {
   h4: "font-serif font-light",
 };
 
-export function Heading({ as: Tag = "h2", children, className }: HeadingProps) {
+export function Heading({ as: Tag = "h2", children, className, ...rest }: HeadingProps) {
   return (
     <Tag
       className={cn(headingStyles[Tag], "text-foreground", className)}
       style={{ letterSpacing: "var(--tracking-tight)" }}
+      {...rest}
     >
       {children}
     </Tag>
   );
 }
 
-interface TextProps {
+interface TextProps extends React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
   className?: string;
   as?: "p" | "span";
@@ -57,6 +58,7 @@ export function Text({
   className,
   as: Tag = "p",
   variant = "body",
+  ...rest
 }: TextProps) {
   return (
     <Tag
@@ -65,6 +67,7 @@ export function Text({
         fontSize: textSizeVars[variant],
         letterSpacing: textTrackingVars[variant],
       }}
+      {...rest}
     >
       {children}
     </Tag>

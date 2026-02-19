@@ -1,20 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Roboto, Playfair_Display } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { TransitionProvider } from "@/src/lib/transition-context";
 import "./globals.css";
 import "./navigation.css";
-
-const _roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-  variable: "--font-roboto",
-});
-
-const _playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-});
 
 export const metadata: Metadata = {
   title: "Maria Luisa de Mateo | Pintura",
@@ -33,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${_roboto.variable} ${_playfair.variable} font-sans antialiased`}>
+      <body className="font-sans antialiased">
         <TransitionProvider>
           {children}
         </TransitionProvider>

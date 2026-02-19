@@ -3,7 +3,7 @@
 import { useState, useEffect, type FormEvent } from "react";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
-import { useReveal } from "@/src/hooks/useReveal";
+import { useSplitReveal } from "@/src/hooks/useSplitReveal";
 import { cn } from "@/lib/utils";
 
 interface FieldState {
@@ -17,7 +17,7 @@ function validateEmail(email: string) {
 }
 
 export function ContactForm() {
-  const sectionRef = useReveal({ y: 40 });
+  const sectionRef = useSplitReveal();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -96,7 +96,7 @@ export function ContactForm() {
 
   return (
     <section id="contact" className="section-padding">
-      <div ref={sectionRef}>
+      <div ref={sectionRef} className="max-width">
         <Divider className="mb-16 md:mb-20" />
 
         <div className="grid gap-16 md:grid-cols-2 md:gap-20">
@@ -105,7 +105,7 @@ export function ContactForm() {
             <Text variant="label" className="mb-4 text-primary">
               Contacto
             </Text>
-            <Heading as="h2" className="text-balance">
+            <Heading as="h2" className="text-balance" data-split data-split-reveal="words">
               Hablemos de arte
             </Heading>
             <Text className="mt-6 max-w-md leading-relaxed">

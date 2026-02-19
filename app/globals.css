@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Roboto:wght@300;400;500;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
@@ -161,8 +162,8 @@
 }
 
 @theme inline {
-  --font-sans: var(--font-roboto), sans-serif;
-  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: 'Roboto', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -216,7 +217,7 @@ body {
     --size-container-min: 768px;
     --size-container-max: 991px;
     --section-py: 5rem;
-    --section-px: 2rem;
+    --section-px: 4rem;
   }
 }
 
@@ -246,6 +247,19 @@ h4 { font-size: var(--type-h4); }
   padding-bottom: var(--section-py);
   padding-left: var(--section-px);
   padding-right: var(--section-px);
+}
+
+/* ── SplitText: hide until JS reveals ── */
+[data-split] {
+  visibility: hidden;
+}
+
+/* ── Max Width utility ── */
+.max-width {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 /* Lenis smooth scroll */
@@ -582,11 +596,12 @@ html.lenis, html.lenis body {
    clip-path clips everything inside to this box.
    The inner container is position:fixed at the bottom,
    so as you scroll past, the content above slides away
-   and reveals the footer underneath. Pure CSS, no JS needed. */
+   and reveals the footer underneath. Pure CSS, no JS needed.
+   Both wrapper and container must share the same height. */
 
 .sticky-footer {
   position: relative;
-  height: 100svh;
+  height: clamp(260px, 42vh, 380px);
   width: 100%;
   clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
 }
@@ -595,83 +610,78 @@ html.lenis, html.lenis body {
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 100svh;
+  height: clamp(260px, 42vh, 380px);
   width: 100%;
+  overflow: hidden;
+  color: #ffffff;
+  /* Layer 1 (bottom): the original solid red */
   background-color: var(--foreground);
-  color: var(--background);
 }
 
+/* Layer 2: image as texture on top of the red, opacity controls blend depth */
+.sticky-footer__container::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/edited-photo.webp');
+  background-size: cover;
+  background-position: center;
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+/* Content: centred column over the overlay */
 .sticky-footer__content {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex-flow: column;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25em;
   height: 100%;
-  padding: 2.5em;
-  letter-spacing: var(--tracking-tight);
-  font-weight: 600;
+  padding: 2em;
+  text-align: center;
 }
 
-.sticky-footer__eyebrow {
-  opacity: 0.5;
-  margin-bottom: 0;
-  font-size: 0.875em;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-
-.sticky-footer__links-row {
-  grid-column-gap: 2.5em;
-  grid-row-gap: 2.5em;
-  display: flex;
-}
-
-.sticky-footer__logo-row {
-  grid-column-gap: 1em;
-  grid-row-gap: 1em;
-  flex-flow: column;
-  display: flex;
-}
-
-.sticky-footer__col {
-  grid-column-gap: 3em;
-  grid-row-gap: 3em;
-  flex-flow: column;
-  width: calc(33.3333% - 1.66667em);
-  display: flex;
-}
-
-.sticky-footer__links {
-  grid-column-gap: 0.25em;
-  grid-row-gap: 0.25em;
-  flex-flow: column;
-  align-items: flex-start;
-  display: flex;
-}
-
-.sticky-footer__a {
-  color: inherit;
-  font-size: 2.75em;
-  line-height: 1;
-  text-decoration: none;
+/* Logo link */
+.sticky-footer__logo {
+  display: block;
+  width: clamp(160px, 18vw, 260px);
+  opacity: 0.95;
   transition: opacity 0.3s ease;
 }
 
-.sticky-footer__a:hover {
+.sticky-footer__logo:hover {
   opacity: 0.7;
 }
 
-.sticky-footer__brand {
-  font-family: var(--font-serif);
-  font-size: clamp(3rem, 12vw, 10rem);
-  line-height: 0.9;
-  font-style: italic;
-  opacity: 0.9;
+.sticky-footer__socials {
+  display: flex;
+  align-items: center;
+  gap: 1.25em;
+}
+
+.sticky-footer__social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.sticky-footer__social-link:hover {
+  color: #ffffff;
+  opacity: 0.7;
 }
 
 .sticky-footer__copy {
-  margin-top: 1em;
-  opacity: 0.4;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72em;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
 }
 
 @media screen and (max-width: 991px) {
@@ -696,5 +706,145 @@ html.lenis, html.lenis body {
 
   .sticky-footer__a {
     font-size: 1.75em;
+  }
+}
+
+/* =============================================
+   Banner Strip — video background
+   ============================================= */
+.banner-strip {
+  position: relative;
+  width: 100%;
+  height: clamp(280px, 42vh, 520px);
+  overflow: hidden;
+}
+
+.banner-strip__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Shift sky-blue (~200°) → red (0°) */
+  filter: hue-rotate(160deg) saturate(1.4) brightness(0.95);
+}
+
+/* Top + bottom fade so the strip reads as part of the page flow */
+.banner-strip__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,  var(--background) 0%, transparent 18%),
+    linear-gradient(to top,     var(--background) 0%, transparent 18%);
+  pointer-events: none;
+}
+
+/* =============================================
+   Draggable Marquee (GSAP Observer)
+   ============================================= */
+.draggable-marquee {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: none;
+  width: 100%;
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+}
+
+.draggable-marquee:active {
+  cursor: grabbing;
+}
+
+.draggable-marquee__collection {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: none;
+  will-change: transform;
+}
+
+.draggable-marquee__list {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex: none;
+}
+
+.draggable-marquee__item {
+  position: relative;
+  width: 18em;
+  aspect-ratio: 1;
+  border-radius: var(--radius-card);
+  margin-right: 1em;
+  flex: none;
+  overflow: hidden;
+  background-color: var(--secondary);
+}
+
+.draggable-marquee__item a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.draggable-marquee__item-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.draggable-marquee__item:hover .draggable-marquee__item-img {
+  transform: scale(1.05);
+}
+
+/* Caption overlay — gradient dark → transparent, bottom to top */
+.draggable-marquee__caption {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.28) 40%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.1em;
+  pointer-events: none;
+}
+
+.draggable-marquee__item:hover .draggable-marquee__caption {
+  opacity: 1;
+}
+
+.draggable-marquee__caption-text {
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.8em;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transform: translateY(6px);
+  transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.draggable-marquee__item:hover .draggable-marquee__caption-text {
+  transform: translateY(0);
+}
+
+@media screen and (max-width: 767px) {
+  .draggable-marquee__item {
+    width: 11em;
   }
 }

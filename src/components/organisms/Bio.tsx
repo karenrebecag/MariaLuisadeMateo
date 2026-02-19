@@ -2,7 +2,7 @@
 
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
-import { useReveal } from "@/src/hooks/useReveal";
+import { useSplitReveal } from "@/src/hooks/useSplitReveal";
 
 const stats = [
   { value: "UNAM", label: "Historia del Arte" },
@@ -12,21 +12,21 @@ const stats = [
 ];
 
 export function Bio() {
-  const sectionRef = useReveal({ y: 60, stagger: 0.15, childSelector: ".bio-item" });
+  const sectionRef = useSplitReveal();
 
   return (
     <section id="bio" className="section-padding">
-      <div ref={sectionRef}>
-        <div className="bio-item">
+      <div ref={sectionRef} className="max-width">
+        <div>
           <Text variant="label" className="mb-4 text-primary">
             Biografia
           </Text>
-          <Heading as="h2" className="max-w-3xl text-balance">
+          <Heading as="h2" className="max-w-3xl text-balance" data-split data-split-reveal="words">
             Maria Luisa de Mateo
           </Heading>
         </div>
 
-        <div className="bio-item mt-12 grid gap-12 md:grid-cols-2">
+        <div className="mt-12 grid gap-12 md:grid-cols-2">
           <div className="space-y-6">
             <Text className="leading-relaxed">
               La pintura de Maria Luisa de Mateo Venturini es realista por el simple placer de recrear momentos de realidad, texturas de realidad, emociones de realidad, inmersion en los colores de la realidad. Muy lejana al hiper realismo, muy cercana al realismo abstracto en el que la realidad se construye en base a manchas, en base a colores.
@@ -51,9 +51,9 @@ export function Bio() {
           </div>
         </div>
 
-        <Divider className="bio-item my-16" />
+        <Divider className="my-16" />
 
-        <div className="bio-item grid grid-cols-2 gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.label}>
               <Text as="span" variant="stat">

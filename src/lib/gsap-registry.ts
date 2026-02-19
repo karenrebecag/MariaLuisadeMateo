@@ -2,10 +2,12 @@
 
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Observer } from "gsap/Observer";
 import { Flip } from "gsap/Flip";
+import { SplitText } from "gsap/SplitText";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, Flip);
+  gsap.registerPlugin(ScrollTrigger, Observer, Flip, SplitText);
 }
 
-export { gsap, ScrollTrigger, Flip };
+export { gsap, ScrollTrigger, Observer, Flip, SplitText };
