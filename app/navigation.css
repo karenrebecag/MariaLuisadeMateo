@@ -75,13 +75,13 @@
   background: none;
   border: none;
   outline: none;
-  justify-content: center;
-  align-items: center;
   display: flex;
+  align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  width: 2em;
-  height: 2em;
+  width: 2.25em;
+  height: 2.25em;
   padding: 0;
   opacity: 0.6;
   transition: opacity 0.3s ease;
@@ -91,23 +91,25 @@
   opacity: 1;
 }
 
+/* Container: full button height so translateY(-100%) = full slide */
 .btn-darklight__icon {
-  width: 1.25em;
+  width: 1.125em;
   height: 100%;
   position: relative;
 }
 
+/* Sun box: centered in container */
 .btn-darklight__icon-box {
   height: 100%;
-  padding-top: 0.35em;
-  padding-bottom: 0.35em;
   display: flex;
-  position: relative;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Moon box: absolute with NO top/left — auto-positions BELOW
+   the sun in flow, hidden by overflow:hidden on button */
 .btn-darklight__icon-box.is--absolute {
   position: absolute;
-  inset: 0;
 }
 
 /* Icon animation — bouncy rotate + slide */
@@ -116,6 +118,8 @@
   transform: translateY(0%) rotate(-90deg);
 }
 
+/* Dark: both slide UP by 100% of their height
+   → sun exits top, moon enters from bottom */
 .dark .btn-darklight .btn-darklight__icon-box {
   transform: translateY(-100%) rotate(0.001deg);
 }

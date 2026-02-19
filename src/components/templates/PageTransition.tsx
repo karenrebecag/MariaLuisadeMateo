@@ -22,7 +22,10 @@ export function PageTransition({ children }: PageTransitionProps) {
     if (!columns.length) return;
 
     const tl = gsap.timeline({
-      onComplete: () => setDone(true),
+      onComplete: () => {
+        setDone(true);
+        window.dispatchEvent(new CustomEvent("pageTransitionComplete"));
+      },
     });
 
     // Columns start covering the screen (yPercent: 100 = fully visible)

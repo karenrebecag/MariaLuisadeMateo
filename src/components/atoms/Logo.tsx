@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import { gsap } from "@/src/lib/gsap-registry";
 import { cn } from "@/lib/utils";
 
 interface LogoProps {
@@ -5,6 +9,66 @@ interface LogoProps {
 }
 
 export function Logo({ className }: LogoProps) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const animated = useRef(false);
+
+  useEffect(() => {
+    const svg = svgRef.current;
+    if (!svg || animated.current) return;
+
+    const paths = svg.querySelectorAll<SVGPathElement>("path");
+
+    // Measure each path length and set up initial state
+    paths.forEach((path) => {
+      const length = path.getTotalLength();
+      // Start hidden: stroke drawn at 0%, fill transparent
+      gsap.set(path, {
+        fill: "transparent",
+        stroke: "currentColor",
+        strokeWidth: 1.5,
+        strokeDasharray: length,
+        strokeDashoffset: length,
+      });
+    });
+
+    function onTransitionComplete() {
+      if (animated.current) return;
+      animated.current = true;
+
+      const tl = gsap.timeline();
+
+      // Phase 1: Draw the stroke
+      tl.to(paths, {
+        strokeDashoffset: 0,
+        duration: 1.2,
+        ease: "power2.inOut",
+        stagger: { each: 0.15, from: "start" },
+      });
+
+      // Phase 2: Fill in and fade out stroke
+      tl.to(
+        paths,
+        {
+          fill: "currentColor",
+          strokeWidth: 0,
+          duration: 0.6,
+          ease: "power1.inOut",
+          stagger: { each: 0.08, from: "start" },
+        },
+        "-=0.3"
+      );
+    }
+
+    window.addEventListener("pageTransitionComplete", onTransitionComplete);
+
+    return () => {
+      window.removeEventListener(
+        "pageTransitionComplete",
+        onTransitionComplete
+      );
+    };
+  }, []);
+
   return (
     <a
       href="/"
@@ -15,6 +79,7 @@ export function Logo({ className }: LogoProps) {
       aria-label="de Mateo - Home"
     >
       <svg
+        ref={svgRef}
         viewBox="0 0 336.5 202.5"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
