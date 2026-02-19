@@ -93,13 +93,15 @@ export function MasonryGallery() {
 
       initialized = true;
 
+      const getScrollDist = () => track.scrollWidth - window.innerWidth;
+
       gsap.to(track, {
-        x: -scrollDist,
+        x: () => -getScrollDist(),
         ease: "none",
         scrollTrigger: {
           trigger: wrap,
           start: "top top",
-          end: () => `+=${scrollDist}`,
+          end: () => `+=${getScrollDist()}`,
           scrub: 1,
           pin: true,
           invalidateOnRefresh: true,
@@ -125,10 +127,10 @@ export function MasonryGallery() {
   return (
     <section id="gallery" className="noise-bg">
       {/* Horizontal scroll wrapper */}
-      <div ref={wrapRef} className="overflow-hidden">
+      <div ref={wrapRef} className="h-screen overflow-x-auto overflow-y-hidden md:h-auto md:overflow-hidden">
         <div
           ref={trackRef}
-          className="flex w-max gap-3 p-3 md:gap-4 md:p-4"
+          className="flex h-full w-max gap-3 p-3 touch-pan-x md:h-auto md:gap-4 md:p-4"
         >
           {/* Intro panel — presentación de María Luisa */}
           <div
@@ -154,7 +156,7 @@ export function MasonryGallery() {
             {/* Name block */}
             <div data-reveal className="flex flex-col gap-3">
               <p className="font-sans text-sm uppercase tracking-[0.28em] text-neutral-400 dark:text-neutral-500">
-                Pintura · México
+                Artista · México
               </p>
               <h2 className="font-serif text-5xl leading-[1.02] tracking-tight text-primary md:text-6xl">
                 María Luisa<br />de Mateo
