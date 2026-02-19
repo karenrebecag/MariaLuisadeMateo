@@ -1,0 +1,700 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── @property: register CSS vars as <color> so they can animate ── */
+@property --background {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #f5f2ed;
+}
+@property --foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #D92328;
+}
+@property --card {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ffffff;
+}
+@property --card-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1a1714;
+}
+@property --primary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c41e1e;
+}
+@property --secondary {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e8e4de;
+}
+@property --secondary-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #1a1714;
+}
+@property --muted {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e8e4de;
+}
+@property --muted-foreground {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #736d65;
+}
+@property --border {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #d6d1ca;
+}
+@property --input {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #e8e4de;
+}
+@property --ring {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #c41e1e;
+}
+
+:root {
+  /* ── Osmo Scaling System ── */
+  --size-unit: 18;
+  --size-container-ideal: 1920;
+  --size-container-min: 992px;
+  --size-container-max: 2560px;
+  --size-container: clamp(var(--size-container-min), 100vw, var(--size-container-max));
+  --size-font: calc(var(--size-container) / (var(--size-container-ideal) / var(--size-unit)));
+
+  /* ── Type Scale (1.25 Major Third) ── */
+  --type-h1: calc(var(--size-font) * 1.25 * 1.25 * 1.25 * 1.25);
+  --type-h2: calc(var(--size-font) * 1.25 * 1.25 * 1.25);
+  --type-h3: calc(var(--size-font) * 1.25 * 1.25);
+  --type-h4: calc(var(--size-font) * 1.25);
+  --type-body: var(--size-font);
+  --type-small: calc(var(--size-font) * 0.875);
+  --type-xs: calc(var(--size-font) * 0.75);
+
+  /* ── Letter-spacing tokens ── */
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.1em;
+
+  /* ── Section spacing tokens ── */
+  --section-py: 6rem;
+  --section-px: 3rem;
+
+  /* ── Border-radius tokens ── */
+  --radius: 0.375rem;
+  --radius-card: 1.25em;
+  --radius-nav: 0.75em;
+
+  /* ── Colors ── */
+  --background: #f5f2ed;
+  --foreground: #D92328;
+  --card: #ffffff;
+  --card-foreground: #1a1714;
+  --popover: #ffffff;
+  --popover-foreground: #1a1714;
+  --primary: #c41e1e;
+  --primary-foreground: #ffffff;
+  --secondary: #e8e4de;
+  --secondary-foreground: #1a1714;
+  --muted: #e8e4de;
+  --muted-foreground: #736d65;
+  --accent: #c41e1e;
+  --accent-foreground: #ffffff;
+  --destructive: #c41e1e;
+  --destructive-foreground: #ffffff;
+  --success: #16a34a;
+  --success-foreground: #ffffff;
+  --border: #d6d1ca;
+  --input: #e8e4de;
+  --ring: #c41e1e;
+
+  /* Smooth theme transition for all registered color vars */
+  transition:
+    --background 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --foreground 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --card 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --card-foreground 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --primary 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --secondary 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --secondary-foreground 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --muted 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --muted-foreground 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --border 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --input 0.4s cubic-bezier(0.35, 1, 0.6, 1),
+    --ring 0.4s cubic-bezier(0.35, 1, 0.6, 1);
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #f0ece4;
+  --card: #111111;
+  --card-foreground: #f0ece4;
+  --popover: #111111;
+  --popover-foreground: #f0ece4;
+  --primary: #d92626;
+  --primary-foreground: #ffffff;
+  --secondary: #1a1a1a;
+  --secondary-foreground: #f0ece4;
+  --muted: #1a1a1a;
+  --muted-foreground: #8a8580;
+  --accent: #d92626;
+  --accent-foreground: #ffffff;
+  --destructive: #d92626;
+  --destructive-foreground: #ffffff;
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --border: #222222;
+  --input: #1a1a1a;
+  --ring: #d92626;
+}
+
+@theme inline {
+  --font-sans: var(--font-roboto), sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  font-size: var(--size-font);
+  overflow-x: hidden;
+}
+
+/* ── Osmo Breakpoint Overrides ── */
+@media screen and (max-width: 991px) {
+  :root {
+    --size-unit: 17;
+    --size-container-ideal: 834;
+    --size-container-min: 768px;
+    --size-container-max: 991px;
+    --section-py: 5rem;
+    --section-px: 2rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  :root {
+    --size-unit: 16;
+    --size-container-ideal: 390;
+    --size-container-min: 320px;
+    --size-container-max: 767px;
+    --section-py: 4rem;
+    --section-px: 1.5rem;
+  }
+}
+
+/* ── Type Scale (applied globally) ── */
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+}
+h1 { font-size: var(--type-h1); }
+h2 { font-size: var(--type-h2); }
+h3 { font-size: var(--type-h3); }
+h4 { font-size: var(--type-h4); }
+
+/* ── Section Padding utility ── */
+.section-padding {
+  padding-top: var(--section-py);
+  padding-bottom: var(--section-py);
+  padding-left: var(--section-px);
+  padding-right: var(--section-px);
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 2px;
+}
+
+/* Selection */
+::selection {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* =============================================
+   Scroll Progress Bar
+   ============================================= */
+.progress-bar-wrap {
+  z-index: 999;
+  cursor: pointer;
+  width: 100%;
+  height: 4px;
+  transition: height 0.2s ease, background-color 0.2s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.progress-bar-wrap:hover {
+  height: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .progress-bar-wrap:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.progress-bar {
+  transform-origin: left;
+  background-color: var(--primary);
+  width: 100%;
+  height: 100%;
+  transform: scaleX(0);
+}
+
+/* =============================================
+   Overlapping Parallax Page Transition
+   View Transitions API — Osmo style
+   ============================================= */
+
+/* Disable default crossfade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+
+/* Old page: shifts up -25vh with darkening */
+::view-transition-old(root) {
+  animation: parallax-leave 1.2s cubic-bezier(0.7, 0.05, 0.13, 1) forwards;
+  z-index: 1;
+}
+
+/* New page: slides up from 100vh */
+::view-transition-new(root) {
+  animation: parallax-enter 1.2s cubic-bezier(0.7, 0.05, 0.13, 1) forwards;
+  z-index: 2;
+}
+
+@keyframes parallax-leave {
+  from {
+    transform: translateY(0);
+    filter: brightness(1);
+  }
+  to {
+    transform: translateY(-25vh);
+    filter: brightness(0.2);
+  }
+}
+
+@keyframes parallax-enter {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* =============================================
+   Masonry Image Hover
+   ============================================= */
+.masonry-hover {
+  cursor: pointer;
+}
+
+.masonry-hover__img {
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.masonry-hover:hover .masonry-hover__img {
+  transform: scale(1.05);
+}
+
+.masonry-hover__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0.1) 50%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+  display: flex;
+  align-items: flex-end;
+  padding: 1.25em;
+  z-index: 2;
+}
+
+.masonry-hover:hover .masonry-hover__overlay {
+  opacity: 1;
+}
+
+.masonry-hover__title {
+  color: #fff;
+  font-family: var(--font-serif);
+  font-size: 1.125em;
+  font-weight: 500;
+  letter-spacing: var(--tracking-tight);
+  transform: translateY(8px);
+  transition: transform 0.4s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.masonry-hover:hover .masonry-hover__title {
+  transform: translateY(0);
+}
+
+/* =============================================
+   Column Wipe Page Transition — Osmo
+   ============================================= */
+.transition-wrap {
+  z-index: 100;
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  overflow: clip;
+}
+
+.transition__panels {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.transition__panel {
+  background-color: var(--foreground);
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: -100%;
+}
+
+.transition__lines {
+  opacity: 0.1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.transition__line {
+  border-right: 1px solid var(--background);
+  width: 100%;
+  height: 100%;
+}
+
+.transition__line.is--last {
+  border-right-style: none;
+}
+
+/* =============================================
+   Osmo Masonry Grid (exact replica)
+   ============================================= */
+.masonry-wrap {
+  padding-bottom: 4em;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+.masonry-list {
+  grid-column-gap: var(--masonry-gap);
+  grid-row-gap: var(--masonry-gap);
+  flex-flow: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  display: flex;
+  position: relative;
+}
+
+.masonry-item {
+  width: calc(((100% - 1px) - (var(--masonry-col) - 1) * var(--masonry-gap)) / var(--masonry-col));
+}
+
+.masonry-item__visual {
+  border-radius: var(--radius-card);
+  width: 100%;
+  overflow: hidden;
+}
+
+.masonry-item__visual.is--square {
+  aspect-ratio: 1;
+}
+
+.masonry-item__visual.is--wide {
+  aspect-ratio: 3 / 2;
+}
+
+.masonry-item__visual.is--tall {
+  aspect-ratio: 2 / 3;
+}
+
+.masonry-item__visual-img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+[data-masonry-list] {
+  --masonry-col: 4;
+  --masonry-gap: 1em;
+}
+
+@media screen and (max-width: 991px) {
+  [data-masonry-list] {
+    --masonry-col: 3;
+    --masonry-gap: 1em;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  [data-masonry-list] {
+    --masonry-col: 2;
+    --masonry-gap: 0.5em;
+  }
+
+  .masonry-wrap {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+}
+
+/* Masonry item transitions for filter */
+.masonry-item {
+  transition: top 0.5s cubic-bezier(0.625, 0.05, 0, 1),
+              left 0.5s cubic-bezier(0.625, 0.05, 0, 1),
+              opacity 0.5s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.masonry-item[data-filter-status="active"] {
+  transition: opacity 0.6s cubic-bezier(0.625, 0.05, 0, 1),
+              transform 0.6s cubic-bezier(0.625, 0.05, 0, 1),
+              top 0.5s cubic-bezier(0.625, 0.05, 0, 1),
+              left 0.5s cubic-bezier(0.625, 0.05, 0, 1);
+  transform: scale(1) rotate(0.001deg);
+  opacity: 1;
+  visibility: visible;
+}
+
+.masonry-item[data-filter-status="transition-out"] {
+  transition: opacity 0.45s cubic-bezier(0.625, 0.05, 0, 1),
+              transform 0.45s cubic-bezier(0.625, 0.05, 0, 1);
+  transform: scale(0.9) rotate(0.001deg);
+  opacity: 0;
+  visibility: visible;
+}
+
+.masonry-item[data-filter-status="not-active"] {
+  transform: scale(0.9) rotate(0.001deg);
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+}
+
+/* =============================================
+   Horizontal Masonry Wrapper
+   ============================================= */
+.horizontal-masonry__wrap {
+  overflow: hidden;
+  position: relative;
+}
+
+/* On mobile: disable horizontal scroll, show vertically */
+@media screen and (max-width: 767px) {
+  .horizontal-masonry__wrap {
+    overflow: visible;
+  }
+}
+
+/* =============================================
+   Sticky Footer — clip-path + fixed method
+   ============================================= */
+
+/* The outer wrapper creates a "window" in the document flow.
+   clip-path clips everything inside to this box.
+   The inner container is position:fixed at the bottom,
+   so as you scroll past, the content above slides away
+   and reveals the footer underneath. Pure CSS, no JS needed. */
+
+.sticky-footer {
+  position: relative;
+  height: 100svh;
+  width: 100%;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 100%);
+}
+
+.sticky-footer__container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 100svh;
+  width: 100%;
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.sticky-footer__content {
+  display: flex;
+  flex-flow: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 2.5em;
+  letter-spacing: var(--tracking-tight);
+  font-weight: 600;
+}
+
+.sticky-footer__eyebrow {
+  opacity: 0.5;
+  margin-bottom: 0;
+  font-size: 0.875em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+}
+
+.sticky-footer__links-row {
+  grid-column-gap: 2.5em;
+  grid-row-gap: 2.5em;
+  display: flex;
+}
+
+.sticky-footer__logo-row {
+  grid-column-gap: 1em;
+  grid-row-gap: 1em;
+  flex-flow: column;
+  display: flex;
+}
+
+.sticky-footer__col {
+  grid-column-gap: 3em;
+  grid-row-gap: 3em;
+  flex-flow: column;
+  width: calc(33.3333% - 1.66667em);
+  display: flex;
+}
+
+.sticky-footer__links {
+  grid-column-gap: 0.25em;
+  grid-row-gap: 0.25em;
+  flex-flow: column;
+  align-items: flex-start;
+  display: flex;
+}
+
+.sticky-footer__a {
+  color: inherit;
+  font-size: 2.75em;
+  line-height: 1;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.sticky-footer__a:hover {
+  opacity: 0.7;
+}
+
+.sticky-footer__brand {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 12vw, 10rem);
+  line-height: 0.9;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+.sticky-footer__copy {
+  margin-top: 1em;
+  opacity: 0.4;
+}
+
+@media screen and (max-width: 991px) {
+  .sticky-footer__links-row {
+    flex-flow: column;
+  }
+
+  .sticky-footer__col {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .sticky-footer__content {
+    padding: 1em;
+  }
+
+  .sticky-footer__col {
+    grid-column-gap: 1em;
+    grid-row-gap: 1em;
+  }
+
+  .sticky-footer__a {
+    font-size: 1.75em;
+  }
+}
