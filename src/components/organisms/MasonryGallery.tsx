@@ -102,7 +102,7 @@ export function MasonryGallery() {
           trigger: wrap,
           start: "top top",
           end: () => `+=${getScrollDist()}`,
-          scrub: 1,
+          scrub: 0.5,
           pin: true,
           invalidateOnRefresh: true,
           anticipatePin: 1,
