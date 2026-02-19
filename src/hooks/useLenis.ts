@@ -26,7 +26,29 @@ export function useLenis() {
 
     gsap.ticker.lagSmoothing(0);
 
+    // Smooth scroll to anchor links
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest('a[href^="#"]');
+
+      if (!anchor) return;
+
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+
+      e.preventDefault();
+
+      lenis.scrollTo(href, {
+        duration: 1.2,
+        easing: (x: number) => (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2),
+        offset: -80, // Offset for fixed header if needed
+      });
+    };
+
+    document.addEventListener('click', handleAnchorClick);
+
     return () => {
+      document.removeEventListener('click', handleAnchorClick);
       lenis.destroy();
       lenisRef.current = null;
     };

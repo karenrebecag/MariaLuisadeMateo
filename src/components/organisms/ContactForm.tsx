@@ -36,6 +36,17 @@ export function ContactForm() {
       ...Array.from(form.querySelectorAll<HTMLElement>("[data-reveal]")),
     ];
 
+    // Check if section is already in view (scroll restoration or mobile)
+    const rect = left.getBoundingClientRect();
+    const isInView = rect.top < window.innerHeight * 0.82;
+
+    if (isInView) {
+      // Already visible - show immediately without animation
+      gsap.set(items, { y: 0, autoAlpha: 1 });
+      return;
+    }
+
+    // Not in view yet - set up ScrollTrigger animation
     gsap.set(items, { y: 40, autoAlpha: 0 });
 
     const st = ScrollTrigger.create({

@@ -21,6 +21,14 @@ export function PageTransition({ children }: PageTransitionProps) {
     const columns = wrap.querySelectorAll<HTMLElement>("[data-transition-column]");
     if (!columns.length) return;
 
+    // Restore scroll position BEFORE animation starts (prevents flash)
+    const currentPath = window.location.pathname;
+    const savedScroll = sessionStorage.getItem(`scroll_${currentPath}`);
+    if (savedScroll) {
+      const scrollPos = parseInt(savedScroll, 10);
+      window.scrollTo({ top: scrollPos, behavior: "instant" });
+    }
+
     const tl = gsap.timeline({
       onComplete: () => {
         setDone(true);

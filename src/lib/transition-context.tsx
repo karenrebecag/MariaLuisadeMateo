@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
 } from "react";
 import { useRouter } from "next/navigation";
 
@@ -26,8 +27,36 @@ interface TransitionProviderProps {
 export function TransitionProvider({ children }: TransitionProviderProps) {
   const router = useRouter();
 
+  // Disable browser's automatic scroll restoration
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+
+    // Save scroll position on browser back/forward navigation
+    const handleBeforeUnload = () => {
+      const currentPath = window.location.pathname;
+      const scrollPos = window.scrollY || document.documentElement.scrollTop;
+      sessionStorage.setItem(`scroll_${currentPath}`, scrollPos.toString());
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    // Also save on popstate (browser back/forward)
+    window.addEventListener('popstate', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handleBeforeUnload);
+    };
+  }, []);
+
   const navigateWithTransition = useCallback(
     (href: string) => {
+      // Save current scroll position before navigating
+      const currentPath = window.location.pathname;
+      const scrollPos = window.scrollY || document.documentElement.scrollTop;
+      sessionStorage.setItem(`scroll_${currentPath}`, scrollPos.toString());
+
       // Fallback for browsers without View Transitions API
       if (!document.startViewTransition) {
         router.push(href);
