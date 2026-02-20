@@ -27,7 +27,7 @@ export async function getInstagramPosts(
           Referer: "https://www.instagram.com/",
         },
         signal: AbortSignal.timeout(4000),
-        next: { revalidate: 3600 },
+        next: { revalidate: 3600, tags: ["instagram-data"] },
       }
     );
 

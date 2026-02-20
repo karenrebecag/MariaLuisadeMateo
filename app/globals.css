@@ -776,7 +776,7 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.22em;
   font-weight: 400;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
   margin: 0;
 }
 

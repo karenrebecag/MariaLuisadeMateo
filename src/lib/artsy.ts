@@ -48,7 +48,7 @@ export async function getArtsyArtworks(): Promise<ArtsyArtwork[] | null> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ query: QUERY }),
       signal: AbortSignal.timeout(10_000),
-      next: { revalidate: 3600 },
+      next: { revalidate: 3600, tags: ["artsy-data"] },
     });
 
     if (!res.ok) {
