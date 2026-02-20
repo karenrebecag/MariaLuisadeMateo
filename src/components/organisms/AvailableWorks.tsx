@@ -2,6 +2,7 @@
 
 import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Text } from "@/src/components/atoms/Typography";
 import { gsap, Flip, ScrollTrigger } from "@/src/lib/gsap-registry";
 import { useTransitionReady } from "@/src/hooks/useTransitionReady";
@@ -34,6 +35,7 @@ interface AvailableWorksProps {
 }
 
 export function AvailableWorks({ works: externalWorks }: AvailableWorksProps) {
+  const t = useTranslations("availableWorks");
   const items = externalWorks ?? FALLBACK_WORKS;
   const isArtsy = !!externalWorks;
   const [activeLayout, setActiveLayout] = useState<"large" | "small">("large");
@@ -159,18 +161,18 @@ export function AvailableWorks({ works: externalWorks }: AvailableWorksProps) {
         <div ref={headerRef} className="mb-10 flex flex-col gap-8 md:mb-12 md:flex-row md:items-end md:justify-between">
           <div className="flex flex-col gap-3">
             <Text variant="label" className="text-primary">
-              Adquisición
+              {t("label")}
             </Text>
             <h2
               className="font-serif leading-tight tracking-tight text-card-foreground"
               style={{ fontSize: "var(--type-h2)" }}
             >
-              Obra disponible
+              {t("title")}
             </h2>
             <p className="max-w-[38ch] font-sans text-base leading-relaxed text-muted-foreground">
-              Piezas originales. Para consultas de precio y disponibilidad,{" "}
+              {t("description")}{" "}
               <a href="#contact" className="text-primary underline-offset-4 hover:underline">
-                escríbeme
+                {t("descriptionLink")}
               </a>
               .
             </p>
@@ -189,7 +191,7 @@ export function AvailableWorks({ works: externalWorks }: AvailableWorksProps) {
                 <rect x="7.67" y="1" width="3.33" height="3.33" fill="currentColor" />
                 <rect x="7.67" y="7.61" width="3.33" height="3.33" fill="currentColor" />
               </svg>
-              <span className="aw-btn__label">Grande</span>
+              <span className="aw-btn__label">{t("large")}</span>
             </button>
             <button
               onClick={() => handleLayoutChange("small")}
@@ -207,7 +209,7 @@ export function AvailableWorks({ works: externalWorks }: AvailableWorksProps) {
                 <rect x="4.75" y="8.5" width="2.5" height="2.5" fill="currentColor" />
                 <rect x="8.5" y="8.5" width="2.5" height="2.5" fill="currentColor" />
               </svg>
-              <span className="aw-btn__label">Pequeño</span>
+              <span className="aw-btn__label">{t("small")}</span>
             </button>
           </div>
         </div>

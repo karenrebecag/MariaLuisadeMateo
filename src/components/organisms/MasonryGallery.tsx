@@ -1,13 +1,19 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 import {
   ALL_IMAGES,
   shuffleImages,
   DESKTOP_COUNT,
 } from "@/src/data/gallery-images";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Aspect-ratio cycle applied per item index
 const ASPECT_CYCLE = [
@@ -25,6 +31,7 @@ const ASPECT_HEIGHT: Record<string, number> = {
 };
 
 export function MasonryGallery() {
+  const t = useTranslations("gallery");
   const wrapRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
@@ -32,6 +39,11 @@ export function MasonryGallery() {
   const [columns, setColumns] = useState<
     { src: string; alt: string; aspect: string }[][]
   >([]);
+  const [selected, setSelected] = useState<{ src: string; alt: string } | null>(null);
+
+  const handleImageClick = useCallback((src: string, alt: string) => {
+    setSelected({ src, alt });
+  }, []);
 
   useEffect(() => {
     const shuffled = shuffleImages(ALL_IMAGES).slice(0, DESKTOP_COUNT);
@@ -168,7 +180,7 @@ export function MasonryGallery() {
             {/* Name block */}
             <div data-reveal className="flex flex-col gap-3">
               <p className="font-sans text-sm uppercase tracking-[0.28em] text-neutral-400 dark:text-neutral-500">
-                Artista · México
+                {t("subtitle")}
               </p>
               <h2 className="font-serif text-5xl leading-[1.02] tracking-tight text-primary md:text-6xl">
                 María Luisa<br />de Mateo
@@ -180,8 +192,7 @@ export function MasonryGallery() {
               data-reveal
               className="max-w-[26ch] font-sans text-lg leading-relaxed text-neutral-500 dark:text-neutral-400"
             >
-              Obra que vive en el límite entre la figura y lo que
-              la memoria retiene de ella.
+              {t("tagline")}
             </p>
 
             {/* Scroll hint */}
@@ -190,7 +201,7 @@ export function MasonryGallery() {
               className="absolute bottom-10 left-8 flex items-center gap-2.5 md:left-12"
             >
               <span className="animate-bounce inline-block font-sans text-sm uppercase tracking-[0.25em] text-neutral-400 dark:text-neutral-500">
-                ↓ desplaza para recorrer
+                {t("scrollHint")}
               </span>
             </div>
           </div>
@@ -198,9 +209,11 @@ export function MasonryGallery() {
           {columns.map((col, colIdx) => (
             <div key={colIdx} className="flex w-[260px] shrink-0 flex-col gap-3 md:w-[300px] md:gap-4">
               {col.map((item, itemIdx) => (
-                <div
+                <button
                   key={itemIdx}
-                  className={`masonry-hover relative w-full overflow-hidden rounded-2xl ${item.aspect}`}
+                  type="button"
+                  onClick={() => handleImageClick(item.src, item.alt)}
+                  className={`masonry-hover relative w-full overflow-hidden rounded-2xl ${item.aspect} cursor-pointer border-0 bg-transparent p-0`}
                 >
                   <Image
                     src={item.src}
@@ -213,12 +226,37 @@ export function MasonryGallery() {
                   <div className="masonry-hover__overlay">
                     <span className="masonry-hover__title">{item.alt}</span>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           ))}
         </div>
       </div>
+
+      {/* Image preview overlay */}
+      <Dialog open={!!selected} onOpenChange={(open) => !open && setSelected(null)}>
+        <DialogContent
+          className="max-w-[90vw] max-h-[90vh] w-auto border-0 bg-transparent p-0 shadow-none sm:max-w-[90vw] [&>button]:top-3 [&>button]:right-3 [&>button]:z-10 [&>button]:rounded-full [&>button]:bg-black/60 [&>button]:p-2 [&>button]:text-white [&>button]:backdrop-blur-sm [&>button]:hover:bg-black/80"
+        >
+          {selected && (
+            <div className="flex flex-col items-center gap-4">
+              <div className="relative max-h-[75vh] w-auto overflow-hidden rounded-2xl">
+                <Image
+                  src={selected.src}
+                  alt={selected.alt}
+                  width={900}
+                  height={1200}
+                  className="max-h-[75vh] w-auto rounded-2xl object-contain"
+                  priority
+                />
+              </div>
+              <DialogTitle className="font-serif text-2xl tracking-tight text-white drop-shadow-lg md:text-3xl">
+                {selected.alt}
+              </DialogTitle>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

@@ -1,23 +1,25 @@
 "use client";
 
 import { useRef, useEffect } from "react";
+import { useTranslations } from "next-intl";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
 import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 
-const stats = [
-  { value: "UNAM", label: "Historia del Arte" },
-  { value: "UC Berkeley", label: "Posgrado" },
-  { value: "30+", label: "Exposiciones" },
-  { value: "Óleo", label: "Técnica principal" },
-];
-
 export function Bio() {
+  const t = useTranslations("bio");
   const sectionRef = useSplitReveal();
   const statsRef = useRef<HTMLDivElement>(null);
   const ready = useTransitionReady();
+
+  const stats = [
+    { value: t("stats.unamValue"), label: t("stats.unamLabel") },
+    { value: t("stats.berkeleyValue"), label: t("stats.berkeleyLabel") },
+    { value: t("stats.exhibitionsValue"), label: t("stats.exhibitionsLabel") },
+    { value: t("stats.techniqueValue"), label: t("stats.techniqueLabel") },
+  ];
 
   useEffect(() => {
     if (!ready) return;
@@ -55,35 +57,23 @@ export function Bio() {
       <div ref={sectionRef} className="max-width">
         <div>
           <Text variant="label" className="mb-4 text-primary">
-            Biografia
+            {t("label")}
           </Text>
           <Heading as="h2" className="max-w-3xl text-balance" data-split data-split-reveal="words">
-            Maria Luisa de Mateo
+            {t("title")}
           </Heading>
         </div>
 
         <div className="mt-12 grid gap-12 md:grid-cols-2">
           <div className="space-y-6">
-            <Text className="leading-relaxed">
-              La pintura de Maria Luisa de Mateo Venturini es realista por el simple placer de recrear momentos de realidad, texturas de realidad, emociones de realidad, inmersion en los colores de la realidad. Muy lejana al hiper realismo, muy cercana al realismo abstracto en el que la realidad se construye en base a manchas, en base a colores.
-            </Text>
-            <Text className="leading-relaxed">
-              Nacio en Ciudad de Mexico. Estudio Historia con especialidad en Arte en la UNAM obteniendo Mencion Honorifica. Realizo estudios de posgrado en Historia del Arte, en la Universidad de California en Berkeley, USA.
-            </Text>
-            <Text className="leading-relaxed">
-              En un despiste muy disfrutado, estudio una maestria en Economia en la UNAM, tambien con Mencion Honorifica, aun cuando siempre supo que su pasion era la pintura.
-            </Text>
+            <Text className="leading-relaxed">{t("p1")}</Text>
+            <Text className="leading-relaxed">{t("p2")}</Text>
+            <Text className="leading-relaxed">{t("p3")}</Text>
           </div>
           <div className="space-y-6">
-            <Text className="leading-relaxed">
-              Sin paciencia para acudir a una formacion escolar, estudia, investiga y aprende de los grandes maestros, en particular de Velazquez, a quien copia y desmenuza. Posiblemente por su formacion de historiadora, su especialidad y mayor gozo es el retrato.
-            </Text>
-            <Text className="leading-relaxed">
-              Aun cuando cualquier ejercicio con un pincel en la mano es igualmente gratificante. Sus pinturas estan en diferentes formatos, principalmente en oleo sobre tela, aun cuando tambien ha realizado grabados y serigrafias.
-            </Text>
-            <Text className="leading-relaxed">
-              Ha realizado exposiciones tanto en Mexico como en el extranjero. Los diferentes temas en sus pinturas son expresiones de estas exposiciones.
-            </Text>
+            <Text className="leading-relaxed">{t("p4")}</Text>
+            <Text className="leading-relaxed">{t("p5")}</Text>
+            <Text className="leading-relaxed">{t("p6")}</Text>
           </div>
         </div>
 

@@ -1,14 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { TransitionProvider } from "@/src/lib/transition-context";
-import { CustomCursor } from "@/src/components/atoms/CustomCursor";
 import "./globals.css";
 import "./navigation.css";
 
 export const metadata: Metadata = {
-  title: "Maria Luisa de Mateo ",
-  description:
-    "Portafolio de arte de Maria Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta.",
+  title: "Maria Luisa de Mateo",
 };
 
 export const viewport: Viewport = {
@@ -20,15 +16,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <html lang="es" suppressHydrationWarning>
-      <body className="font-sans antialiased">
-        <CustomCursor />
-        <TransitionProvider>
-          {children}
-        </TransitionProvider>
-        <Analytics />
-      </body>
-    </html>
-  );
+  return children;
 }

@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { useReveal } from "@/src/hooks/useReveal";
 
 export function Hero() {
+  const t = useTranslations("hero");
   const titleRef = useReveal({ y: 80, duration: 1.2 });
   const subtitleRef = useReveal({ y: 40, delay: 0.3 });
 
@@ -27,12 +29,12 @@ export function Hero() {
       <div className="relative z-10 px-6 md:px-12">
         <div ref={titleRef}>
           <Heading as="h1" className="max-w-4xl text-balance">
-            Art is the lie that enables us to realize the truth
+            {t("title")}
           </Heading>
         </div>
         <div ref={subtitleRef} className="mt-6">
           <Text className="max-w-lg text-foreground/70">
-            A curated collection of works exploring light, form, and the human condition.
+            {t("subtitle")}
           </Text>
         </div>
       </div>

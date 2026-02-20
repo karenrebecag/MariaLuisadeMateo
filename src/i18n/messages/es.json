@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "Maria Luisa de Mateo",
+    "description": "Portafolio de arte de Maria Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta."
+  },
+  "nav": {
+    "works": "Obras",
+    "bio": "Bio",
+    "contact": "Contacto"
+  },
+  "header": {
+    "lightMode": "Modo claro",
+    "darkMode": "Modo oscuro",
+    "closeMenu": "Cerrar menu",
+    "openMenu": "Abrir menu"
+  },
+  "hero": {
+    "title": "El arte es la mentira que nos permite comprender la verdad",
+    "subtitle": "Una colección curada de obras que exploran la luz, la forma y la condición humana."
+  },
+  "bio": {
+    "label": "Biografia",
+    "title": "Maria Luisa de Mateo",
+    "stats": {
+      "unamValue": "UNAM",
+      "unamLabel": "Historia del Arte",
+      "berkeleyValue": "UC Berkeley",
+      "berkeleyLabel": "Posgrado",
+      "exhibitionsValue": "30+",
+      "exhibitionsLabel": "Exposiciones",
+      "techniqueValue": "Óleo",
+      "techniqueLabel": "Técnica principal"
+    },
+    "p1": "La pintura de Maria Luisa de Mateo Venturini es realista por el simple placer de recrear momentos de realidad, texturas de realidad, emociones de realidad, inmersion en los colores de la realidad. Muy lejana al hiper realismo, muy cercana al realismo abstracto en el que la realidad se construye en base a manchas, en base a colores.",
+    "p2": "Nacio en Ciudad de Mexico. Estudio Historia con especialidad en Arte en la UNAM obteniendo Mencion Honorifica. Realizo estudios de posgrado en Historia del Arte, en la Universidad de California en Berkeley, USA.",
+    "p3": "En un despiste muy disfrutado, estudio una maestria en Economia en la UNAM, tambien con Mencion Honorifica, aun cuando siempre supo que su pasion era la pintura.",
+    "p4": "Sin paciencia para acudir a una formacion escolar, estudia, investiga y aprende de los grandes maestros, en particular de Velazquez, a quien copia y desmenuza. Posiblemente por su formacion de historiadora, su especialidad y mayor gozo es el retrato.",
+    "p5": "Aun cuando cualquier ejercicio con un pincel en la mano es igualmente gratificante. Sus pinturas estan en diferentes formatos, principalmente en oleo sobre tela, aun cuando tambien ha realizado grabados y serigrafias.",
+    "p6": "Ha realizado exposiciones tanto en Mexico como en el extranjero. Los diferentes temas en sus pinturas son expresiones de estas exposiciones."
+  },
+  "availableWorks": {
+    "label": "Adquisición",
+    "title": "Obra disponible",
+    "description": "Piezas originales. Para consultas de precio y disponibilidad,",
+    "descriptionLink": "escríbeme",
+    "large": "Grande",
+    "small": "Pequeño"
+  },
+  "contact": {
+    "label": "Contacto",
+    "title": "Escríbeme",
+    "description": "Si te interesa adquirir una obra, encargar un retrato o simplemente conversar sobre pintura, con gusto te respondo.",
+    "emailLabel": "Correo",
+    "locationLabel": "Ubicación",
+    "location": "Ciudad de México, México",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre",
+    "emailFieldLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "subjectLabel": "Asunto",
+    "subjectPlaceholder": "Selecciona una opción",
+    "subjectAcquisition": "Adquisición de obra",
+    "subjectCommission": "Encargo de retrato",
+    "subjectExhibition": "Exposición / Colaboración",
+    "subjectPress": "Prensa / Medios",
+    "subjectOther": "Otro",
+    "messageLabel": "Mensaje",
+    "messagePlaceholder": "Escribe tu mensaje aquí...",
+    "submit": "Enviar mensaje",
+    "nameError": "El nombre es obligatorio",
+    "emailError": "Ingresa un correo válido",
+    "subjectError": "Selecciona un asunto",
+    "messageError": "El mensaje debe tener al menos 10 caracteres",
+    "successLabel": "Recibido",
+    "successTitle": "Gracias por escribir",
+    "successMessage": "Te responderé a la brevedad."
+  },
+  "instagram": {
+    "label": "Instagram",
+    "title": "Del taller",
+    "description": "Estudios, bocetos y obra en proceso desde su taller en México.",
+    "follow": "Seguir →",
+    "ariaLabel": "Instagram de María Luisa de Mateo"
+  },
+  "footer": {
+    "copyright": "© 2026 Maria Luisa de Mateo. Todos los derechos reservados.",
+    "homeAriaLabel": "de Mateo — Inicio"
+  },
+  "gallery": {
+    "subtitle": "Artista · México",
+    "tagline": "Obra que vive en el límite entre la figura y lo que la memoria retiene de ella.",
+    "scrollHint": "↓ desplaza para recorrer"
+  },
+  "artwork": {
+    "notFound": "Obra no encontrada",
+    "backToGallery": "← Volver a la galería",
+    "back": "← Volver",
+    "year": "Año",
+    "technique": "Técnica",
+    "dimensions": "Dimensiones",
+    "descriptionSoon": "Descripción de la obra disponible próximamente."
+  }
+}

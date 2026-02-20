@@ -2,15 +2,23 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Sun, Moon } from "lucide-react";
+import { useTranslations, useLocale } from "next-intl";
+import { useRouter, usePathname } from "@/src/i18n/navigation";
 import { Logo } from "@/src/components/atoms/Logo";
 
-const navLinks = [
-  { label: "Obras", href: "#gallery" },
-  { label: "Bio", href: "#bio" },
-  { label: "Contacto", href: "#contact" },
-];
-
 export function Header() {
+  const t = useTranslations("nav");
+  const th = useTranslations("header");
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const navLinks = [
+    { label: t("works"), href: "#gallery" },
+    { label: t("bio"), href: "#bio" },
+    { label: t("contact"), href: "#contact" },
+  ];
+
   const [navActive, setNavActive] = useState(false);
   const [isDark, setIsDark] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -87,6 +95,13 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, [navActive, closeNav, toggleTheme]);
 
+  const switchLocale = useCallback(() => {
+    const nextLocale = locale === "es" ? "en" : "es";
+    router.replace(pathname, { locale: nextLocale });
+  }, [locale, router, pathname]);
+
+  const contactLabel = t("contact");
+
   return (
     <nav
       ref={navRef}
@@ -103,17 +118,28 @@ export function Header() {
       <div className="centered-nav">
         <div className="centered-nav__bg" />
 
-        {/* Header bar: logo + theme toggle + hamburger */}
+        {/* Header bar: logo + actions */}
         <div className="centered-nav__header">
           <Logo className="centered-nav__logo-wrap" />
 
           <div className="centered-nav__actions">
+            {/* Language toggle */}
+            <button
+              type="button"
+              onClick={switchLocale}
+              className="btn-darklight"
+              aria-label={locale === "es" ? "Switch to English" : "Cambiar a Español"}
+              style={{ fontFamily: "var(--font-sans)", fontSize: "12px", fontWeight: 500, letterSpacing: "0.05em", textTransform: "uppercase" }}
+            >
+              {locale === "es" ? "EN" : "ES"}
+            </button>
+
             {/* Dark mode toggle */}
             <button
               type="button"
               onClick={toggleTheme}
               className="btn-darklight"
-              aria-label={isDark ? "Modo claro" : "Modo oscuro"}
+              aria-label={isDark ? th("lightMode") : th("darkMode")}
             >
               <div className="btn-darklight__icon">
                 <div className="btn-darklight__icon-box">
@@ -130,7 +156,7 @@ export function Header() {
               type="button"
               onClick={toggleNav}
               className="centered-nav__toggle"
-              aria-label={navActive ? "Cerrar menu" : "Abrir menu"}
+              aria-label={navActive ? th("closeMenu") : th("openMenu")}
             >
               <div className="centered-nav__toggle-bar" />
               <div className="centered-nav__toggle-bar" />
@@ -176,14 +202,14 @@ export function Header() {
                   <div data-css-marquee-list="" className="centered-nav__banner-item">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="centered-nav__banner-inner">
-                        <p className="centered-nav__banner-text">Contacto</p>
+                        <p className="centered-nav__banner-text">{contactLabel}</p>
                       </div>
                     ))}
                   </div>
                   <div data-css-marquee-list="" className="centered-nav__banner-item">
                     {Array.from({ length: 5 }).map((_, i) => (
                       <div key={i} className="centered-nav__banner-inner">
-                        <p className="centered-nav__banner-text">Contacto</p>
+                        <p className="centered-nav__banner-text">{contactLabel}</p>
                       </div>
                     ))}
                   </div>

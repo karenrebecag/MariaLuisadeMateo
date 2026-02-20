@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "title": "Maria Luisa de Mateo",
+    "description": "Art portfolio of Maria Luisa de Mateo Venturini. Realist painting, portraits, landscapes and still life."
+  },
+  "nav": {
+    "works": "Works",
+    "bio": "Bio",
+    "contact": "Contact"
+  },
+  "header": {
+    "lightMode": "Light mode",
+    "darkMode": "Dark mode",
+    "closeMenu": "Close menu",
+    "openMenu": "Open menu"
+  },
+  "hero": {
+    "title": "Art is the lie that enables us to realize the truth",
+    "subtitle": "A curated collection of works exploring light, form, and the human condition."
+  },
+  "bio": {
+    "label": "Biography",
+    "title": "Maria Luisa de Mateo",
+    "stats": {
+      "unamValue": "UNAM",
+      "unamLabel": "Art History",
+      "berkeleyValue": "UC Berkeley",
+      "berkeleyLabel": "Graduate Studies",
+      "exhibitionsValue": "30+",
+      "exhibitionsLabel": "Exhibitions",
+      "techniqueValue": "Oil",
+      "techniqueLabel": "Primary technique"
+    },
+    "p1": "The painting of Maria Luisa de Mateo Venturini is realist for the simple pleasure of recreating moments of reality, textures of reality, emotions of reality, immersion in the colors of reality. Far from hyperrealism, very close to abstract realism where reality is built through brushstrokes, through colors.",
+    "p2": "Born in Mexico City. She studied History with a specialization in Art at UNAM, graduating with honors. She completed graduate studies in Art History at the University of California, Berkeley, USA.",
+    "p3": "In a much-enjoyed detour, she studied a master's in Economics at UNAM, also with honors, even though she always knew her passion was painting.",
+    "p4": "Without patience for formal schooling, she studies, researches, and learns from the great masters, particularly Velázquez, whom she copies and dissects. Perhaps due to her training as a historian, her specialty and greatest joy is portraiture.",
+    "p5": "Even though any exercise with a brush in hand is equally gratifying. Her paintings come in different formats, primarily oil on canvas, though she has also produced engravings and serigraphs.",
+    "p6": "She has held exhibitions both in Mexico and abroad. The different themes in her paintings are expressions of these exhibitions."
+  },
+  "availableWorks": {
+    "label": "Acquisition",
+    "title": "Available works",
+    "description": "Original pieces. For price and availability inquiries,",
+    "descriptionLink": "write to me",
+    "large": "Large",
+    "small": "Small"
+  },
+  "contact": {
+    "label": "Contact",
+    "title": "Write to me",
+    "description": "If you're interested in acquiring a work, commissioning a portrait, or simply talking about painting, I'd be happy to respond.",
+    "emailLabel": "Email",
+    "locationLabel": "Location",
+    "location": "Mexico City, Mexico",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your name",
+    "emailFieldLabel": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Select an option",
+    "subjectAcquisition": "Artwork acquisition",
+    "subjectCommission": "Portrait commission",
+    "subjectExhibition": "Exhibition / Collaboration",
+    "subjectPress": "Press / Media",
+    "subjectOther": "Other",
+    "messageLabel": "Message",
+    "messagePlaceholder": "Write your message here...",
+    "submit": "Send message",
+    "nameError": "Name is required",
+    "emailError": "Enter a valid email",
+    "subjectError": "Select a subject",
+    "messageError": "Message must be at least 10 characters",
+    "successLabel": "Received",
+    "successTitle": "Thank you for writing",
+    "successMessage": "I'll respond shortly."
+  },
+  "instagram": {
+    "label": "Instagram",
+    "title": "From the studio",
+    "description": "Studies, sketches, and work in progress from her studio in Mexico.",
+    "follow": "Follow →",
+    "ariaLabel": "María Luisa de Mateo's Instagram"
+  },
+  "footer": {
+    "copyright": "© 2026 Maria Luisa de Mateo. All rights reserved.",
+    "homeAriaLabel": "de Mateo — Home"
+  },
+  "gallery": {
+    "subtitle": "Artist · Mexico",
+    "tagline": "Work that lives on the boundary between the figure and what memory retains of it.",
+    "scrollHint": "↓ scroll to explore"
+  },
+  "artwork": {
+    "notFound": "Artwork not found",
+    "backToGallery": "← Back to gallery",
+    "back": "← Back",
+    "year": "Year",
+    "technique": "Technique",
+    "dimensions": "Dimensions",
+    "descriptionSoon": "Artwork description coming soon."
+  }
+}

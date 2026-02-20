@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, type FormEvent } from "react";
+import { useTranslations } from "next-intl";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
@@ -19,6 +20,7 @@ function validateEmail(email: string) {
 }
 
 export function ContactForm() {
+  const t = useTranslations("contact");
   const sectionRef = useSplitReveal();
   const leftRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -128,13 +130,13 @@ export function ContactForm() {
               </svg>
             </div>
             <p className="mt-6 font-sans text-xs uppercase tracking-widest text-muted-foreground">
-              Recibido
+              {t("successLabel")}
             </p>
             <Heading as="h3" className="mt-3 font-serif">
-              Gracias por escribir
+              {t("successTitle")}
             </Heading>
             <Text className="mt-4 text-muted-foreground">
-              Te responderé a la brevedad.
+              {t("successMessage")}
             </Text>
           </div>
         </div>
@@ -153,17 +155,16 @@ export function ContactForm() {
           <div ref={leftRef}>
             <div data-reveal className="flex flex-col gap-3">
               <Text variant="label" className="text-primary">
-                Contacto
+                {t("label")}
               </Text>
               <h2
                 className="font-serif leading-tight tracking-tight text-card-foreground"
                 style={{ fontSize: "var(--type-h2)" }}
               >
-                Escríbeme
+                {t("title")}
               </h2>
               <p className="mt-1 max-w-[36ch] font-sans text-base leading-relaxed text-muted-foreground">
-                Si te interesa adquirir una obra, encargar un retrato
-                o simplemente conversar sobre pintura, con gusto te respondo.
+                {t("description")}
               </p>
             </div>
 
@@ -171,7 +172,7 @@ export function ContactForm() {
             <div data-reveal className="mt-12 space-y-6">
               <div>
                 <p className="mb-1 font-sans text-xs uppercase tracking-widest text-muted-foreground/60">
-                  Correo
+                  {t("emailLabel")}
                 </p>
                 <a
                   href="mailto:contacto@marialuisademateo.com"
@@ -182,10 +183,10 @@ export function ContactForm() {
               </div>
               <div>
                 <p className="mb-1 font-sans text-xs uppercase tracking-widest text-muted-foreground/60">
-                  Ubicación
+                  {t("locationLabel")}
                 </p>
                 <p className="font-serif italic text-lg text-foreground">
-                  Ciudad de México, México
+                  {t("location")}
                 </p>
               </div>
             </div>
@@ -202,12 +203,12 @@ export function ContactForm() {
               {/* Name */}
               <div>
                 <label htmlFor="name" className={labelClass}>
-                  Nombre <span className="text-primary">*</span>
+                  {t("nameLabel")} <span className="text-primary">*</span>
                 </label>
                 <input
                   id="name"
                   type="text"
-                  placeholder="Tu nombre"
+                  placeholder={t("namePlaceholder")}
                   value={fields.name.value}
                   onChange={(e) => updateField("name", e.target.value)}
                   onBlur={() => updateField("name", fields.name.value)}
@@ -215,19 +216,19 @@ export function ContactForm() {
                   required
                 />
                 {fields.name.touched && !fields.name.valid && (
-                  <p className="mt-2 text-xs text-destructive">El nombre es obligatorio</p>
+                  <p className="mt-2 text-xs text-destructive">{t("nameError")}</p>
                 )}
               </div>
 
               {/* Email */}
               <div>
                 <label htmlFor="email" className={labelClass}>
-                  Correo electrónico <span className="text-primary">*</span>
+                  {t("emailFieldLabel")} <span className="text-primary">*</span>
                 </label>
                 <input
                   id="email"
                   type="email"
-                  placeholder="tu@correo.com"
+                  placeholder={t("emailPlaceholder")}
                   value={fields.email.value}
                   onChange={(e) => updateField("email", e.target.value)}
                   onBlur={() => updateField("email", fields.email.value)}
@@ -235,7 +236,7 @@ export function ContactForm() {
                   required
                 />
                 {fields.email.touched && !fields.email.valid && (
-                  <p className="mt-2 text-xs text-destructive">Ingresa un correo válido</p>
+                  <p className="mt-2 text-xs text-destructive">{t("emailError")}</p>
                 )}
               </div>
             </div>
@@ -243,7 +244,7 @@ export function ContactForm() {
             {/* Subject */}
             <div data-reveal>
               <label htmlFor="subject" className={labelClass}>
-                Asunto <span className="text-primary">*</span>
+                {t("subjectLabel")} <span className="text-primary">*</span>
               </label>
               <select
                 id="subject"
@@ -258,27 +259,27 @@ export function ContactForm() {
                 )}
                 required
               >
-                <option value="" disabled>Selecciona una opción</option>
-                <option value="acquisition">Adquisición de obra</option>
-                <option value="commission">Encargo de retrato</option>
-                <option value="exhibition">Exposición / Colaboración</option>
-                <option value="press">Prensa / Medios</option>
-                <option value="other">Otro</option>
+                <option value="" disabled>{t("subjectPlaceholder")}</option>
+                <option value="acquisition">{t("subjectAcquisition")}</option>
+                <option value="commission">{t("subjectCommission")}</option>
+                <option value="exhibition">{t("subjectExhibition")}</option>
+                <option value="press">{t("subjectPress")}</option>
+                <option value="other">{t("subjectOther")}</option>
               </select>
               {fields.subject.touched && !fields.subject.valid && (
-                <p className="mt-2 text-xs text-destructive">Selecciona un asunto</p>
+                <p className="mt-2 text-xs text-destructive">{t("subjectError")}</p>
               )}
             </div>
 
             {/* Message */}
             <div data-reveal>
               <label htmlFor="message" className={labelClass}>
-                Mensaje <span className="text-primary">*</span>
+                {t("messageLabel")} <span className="text-primary">*</span>
               </label>
               <textarea
                 id="message"
                 rows={4}
-                placeholder="Escribe tu mensaje aquí..."
+                placeholder={t("messagePlaceholder")}
                 value={fields.message.value}
                 onChange={(e) => updateField("message", e.target.value)}
                 onBlur={() => updateField("message", fields.message.value)}
@@ -287,7 +288,7 @@ export function ContactForm() {
               />
               {fields.message.touched && !fields.message.valid && (
                 <p className="mt-2 text-xs text-destructive">
-                  El mensaje debe tener al menos 10 caracteres
+                  {t("messageError")}
                 </p>
               )}
             </div>
@@ -297,7 +298,7 @@ export function ContactForm() {
                 type="submit"
                 className="inline-flex items-center border border-primary bg-primary px-10 py-4 text-xs font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-[0.98]"
               >
-                Enviar mensaje
+                {t("submit")}
               </button>
             </div>
           </form>

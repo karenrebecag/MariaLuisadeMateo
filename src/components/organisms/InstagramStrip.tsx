@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { Text } from "@/src/components/atoms/Typography";
 import { RevealOnScroll } from "@/src/components/atoms/RevealOnScroll";
 import { DraggableMarquee, type MarqueeItem } from "./DraggableMarquee";
@@ -22,11 +23,12 @@ const FALLBACK_ITEMS: MarqueeItem[] = [
 ];
 
 export async function InstagramStrip() {
+  const t = await getTranslations("instagram");
   const posts = await getInstagramPosts(INSTAGRAM_USERNAME);
   const items: MarqueeItem[] = posts ?? FALLBACK_ITEMS;
 
   return (
-    <section id="instagram" className="noise-bg" aria-label="Instagram de María Luisa de Mateo">
+    <section id="instagram" className="noise-bg" aria-label={t("ariaLabel")}>
       {/* Section header */}
       <RevealOnScroll className="section-padding pb-0" selector=".flex > *">
         <div className="max-width">
@@ -34,13 +36,13 @@ export async function InstagramStrip() {
             {/* Left — heading block */}
             <div className="flex flex-col gap-3">
               <Text variant="label" className="text-primary">
-                Instagram
+                {t("label")}
               </Text>
               <h2 className="font-serif text-[var(--type-h2)] leading-tight tracking-tight text-card-foreground">
-                Del taller
+                {t("title")}
               </h2>
               <p className="max-w-[38ch] font-sans text-base leading-relaxed text-muted-foreground">
-                Estudios, bocetos y obra en proceso desde su taller en México.
+                {t("description")}
               </p>
             </div>
 
@@ -55,7 +57,7 @@ export async function InstagramStrip() {
                 @{INSTAGRAM_USERNAME}
               </Link>
               <span className="font-sans text-xs uppercase tracking-widest text-muted-foreground">
-                Seguir →
+                {t("follow")}
               </span>
             </div>
           </div>
