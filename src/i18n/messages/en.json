@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "title": "Maria Luisa de Mateo",
-    "description": "Art portfolio of Maria Luisa de Mateo Venturini. Realist painting, portraits, landscapes and still life."
+    "title": "Maria Luisa de Mateo — Mexican Artist | Realist Painting",
+    "description": "Portfolio of Maria Luisa de Mateo Venturini, Mexican visual artist. Realist oil painting: portraits, abstract realism, landscapes and still life. UNAM · UC Berkeley · 30+ exhibitions."
   },
   "nav": {
-    "works": "Works",
     "bio": "Bio",
+    "obras": "Works",
+    "instagram": "Instagram",
     "contact": "Contact"
   },
   "header": {
@@ -71,9 +72,12 @@
     "emailError": "Enter a valid email",
     "subjectError": "Select a subject",
     "messageError": "Message must be at least 10 characters",
+    "sending": "Sending...",
     "successLabel": "Received",
     "successTitle": "Thank you for writing",
-    "successMessage": "I'll respond shortly."
+    "successMessage": "I'll respond shortly.",
+    "errorGeneric": "Something went wrong. Please try again.",
+    "errorRecaptcha": "Security verification failed. Please try again."
   },
   "instagram": {
     "label": "Instagram",

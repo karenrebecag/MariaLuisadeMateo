@@ -1,23 +1,18 @@
 "use client";
 
-import { useState, useEffect, useRef, type FormEvent } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { toast } from "sonner";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
 import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 import { cn } from "@/lib/utils";
-
-interface FieldState {
-  value: string;
-  touched: boolean;
-  valid: boolean;
-}
-
-function validateEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+import { contactSchema, type ContactFormData, SUBJECT_VALUES } from "@/src/lib/contact-schema";
 
 export function ContactForm() {
   const t = useTranslations("contact");
@@ -26,6 +21,19 @@ export function ContactForm() {
   const formRef = useRef<HTMLFormElement>(null);
   const [mounted, setMounted] = useState(false);
   const ready = useTransitionReady();
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, touchedFields, isSubmitting, isSubmitSuccessful },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(
+      contactSchema.omit({ recaptchaToken: true })
+    ),
+    defaultValues: { name: "", email: "", subject: undefined, message: "" },
+    mode: "onTouched",
+  });
 
   useEffect(() => setMounted(true), []);
 
@@ -42,7 +50,6 @@ export function ContactForm() {
       ...Array.from(form.querySelectorAll<HTMLElement>("[data-reveal]")),
     ];
 
-    // Check if section is already in view (scroll restoration or mobile)
     const rect = left.getBoundingClientRect();
     const isInView = rect.top < window.innerHeight * 0.82;
 
@@ -72,39 +79,38 @@ export function ContactForm() {
     return () => st.kill();
   }, [mounted, ready]);
 
-  const [fields, setFields] = useState<Record<string, FieldState>>({
-    name: { value: "", touched: false, valid: false },
-    email: { value: "", touched: false, valid: false },
-    subject: { value: "", touched: false, valid: false },
-    message: { value: "", touched: false, valid: false },
-  });
+  const onSubmit = useCallback(
+    async (data: Omit<ContactFormData, "recaptchaToken">) => {
+      if (!executeRecaptcha) {
+        toast.error(t("errorRecaptcha"));
+        return;
+      }
 
-  const [submitted, setSubmitted] = useState(false);
+      const recaptchaToken = await executeRecaptcha("contact_form");
 
-  const updateField = (name: string, value: string) => {
-    let valid = value.trim().length > 0;
-    if (name === "email") valid = validateEmail(value);
-    if (name === "message") valid = value.trim().length >= 10;
-    setFields((prev) => ({ ...prev, [name]: { value, touched: true, valid } }));
-  };
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, recaptchaToken }),
+      });
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    const updated = { ...fields };
-    let allValid = true;
-    for (const key of Object.keys(updated)) {
-      updated[key].touched = true;
-      if (!updated[key].valid) allValid = false;
-    }
-    setFields(updated);
-    if (allValid) setSubmitted(true);
-  };
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        if (body.error === "recaptcha") {
+          toast.error(t("errorRecaptcha"));
+        } else {
+          toast.error(t("errorGeneric"));
+        }
+        throw new Error(body.error ?? "request_failed");
+      }
+    },
+    [executeRecaptcha, t]
+  );
 
-  const getFieldClasses = (name: string) => {
-    const field = fields[name];
-    if (!field.touched) return "border-border/60";
-    if (field.valid) return "border-success/40";
-    return "border-destructive";
+  const getFieldClasses = (name: keyof ContactFormData) => {
+    if (!touchedFields[name]) return "border-border/60";
+    if (errors[name]) return "border-destructive";
+    return "border-success/40";
   };
 
   const inputBase =
@@ -117,7 +123,7 @@ export function ContactForm() {
     return <section id="contact" className="noise-bg section-padding" />;
   }
 
-  if (submitted) {
+  if (isSubmitSuccessful) {
     return (
       <section id="contact" className="noise-bg section-padding">
         <div className="max-width">
@@ -195,7 +201,7 @@ export function ContactForm() {
           {/* ── Right column — form ──────────────────────────── */}
           <form
             ref={formRef}
-            onSubmit={handleSubmit}
+            onSubmit={handleSubmit(onSubmit)}
             className="space-y-8"
             noValidate
           >
@@ -209,13 +215,10 @@ export function ContactForm() {
                   id="name"
                   type="text"
                   placeholder={t("namePlaceholder")}
-                  value={fields.name.value}
-                  onChange={(e) => updateField("name", e.target.value)}
-                  onBlur={() => updateField("name", fields.name.value)}
+                  {...register("name")}
                   className={cn(inputBase, getFieldClasses("name"))}
-                  required
                 />
-                {fields.name.touched && !fields.name.valid && (
+                {touchedFields.name && errors.name && (
                   <p className="mt-2 text-xs text-destructive">{t("nameError")}</p>
                 )}
               </div>
@@ -229,13 +232,10 @@ export function ContactForm() {
                   id="email"
                   type="email"
                   placeholder={t("emailPlaceholder")}
-                  value={fields.email.value}
-                  onChange={(e) => updateField("email", e.target.value)}
-                  onBlur={() => updateField("email", fields.email.value)}
+                  {...register("email")}
                   className={cn(inputBase, getFieldClasses("email"))}
-                  required
                 />
-                {fields.email.touched && !fields.email.valid && (
+                {touchedFields.email && errors.email && (
                   <p className="mt-2 text-xs text-destructive">{t("emailError")}</p>
                 )}
               </div>
@@ -248,25 +248,27 @@ export function ContactForm() {
               </label>
               <select
                 id="subject"
-                value={fields.subject.value}
-                onChange={(e) => updateField("subject", e.target.value)}
-                onBlur={() => updateField("subject", fields.subject.value)}
+                {...register("subject")}
                 className={cn(
                   inputBase,
                   "cursor-pointer appearance-none",
                   getFieldClasses("subject"),
-                  !fields.subject.value && "text-muted-foreground/40"
                 )}
-                required
               >
                 <option value="" disabled>{t("subjectPlaceholder")}</option>
-                <option value="acquisition">{t("subjectAcquisition")}</option>
-                <option value="commission">{t("subjectCommission")}</option>
-                <option value="exhibition">{t("subjectExhibition")}</option>
-                <option value="press">{t("subjectPress")}</option>
-                <option value="other">{t("subjectOther")}</option>
+                {SUBJECT_VALUES.map((val) => (
+                  <option key={val} value={val}>
+                    {t(`subject${val.charAt(0).toUpperCase()}${val.slice(1)}` as
+                      | "subjectAcquisition"
+                      | "subjectCommission"
+                      | "subjectExhibition"
+                      | "subjectPress"
+                      | "subjectOther"
+                    )}
+                  </option>
+                ))}
               </select>
-              {fields.subject.touched && !fields.subject.valid && (
+              {touchedFields.subject && errors.subject && (
                 <p className="mt-2 text-xs text-destructive">{t("subjectError")}</p>
               )}
             </div>
@@ -280,13 +282,10 @@ export function ContactForm() {
                 id="message"
                 rows={4}
                 placeholder={t("messagePlaceholder")}
-                value={fields.message.value}
-                onChange={(e) => updateField("message", e.target.value)}
-                onBlur={() => updateField("message", fields.message.value)}
+                {...register("message")}
                 className={cn(inputBase, "resize-none border-b", getFieldClasses("message"))}
-                required
               />
-              {fields.message.touched && !fields.message.valid && (
+              {touchedFields.message && errors.message && (
                 <p className="mt-2 text-xs text-destructive">
                   {t("messageError")}
                 </p>
@@ -296,9 +295,10 @@ export function ContactForm() {
             <div data-reveal className="pt-2">
               <button
                 type="submit"
-                className="inline-flex items-center border border-primary bg-primary px-10 py-4 text-xs font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-[0.98]"
+                disabled={isSubmitting}
+                className="inline-flex items-center border border-primary bg-primary px-10 py-4 text-xs font-medium uppercase tracking-widest text-white transition-all duration-300 hover:bg-transparent hover:text-primary active:scale-[0.98] disabled:pointer-events-none disabled:opacity-60"
               >
-                {t("submit")}
+                {isSubmitting ? t("sending") : t("submit")}
               </button>
             </div>
           </form>

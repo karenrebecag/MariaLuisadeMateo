@@ -7,6 +7,7 @@ export interface MarqueeItem {
   src: string;
   alt: string;
   caption?: string;
+  date?: string;
   link?: string;
 }
 
@@ -142,11 +143,18 @@ export function DraggableMarquee({
                   alt={item.alt}
                   className="draggable-marquee__item-img"
                 />
-                {item.caption && (
+                {(item.caption || item.date) && (
                   <div className="draggable-marquee__caption" aria-hidden="true">
-                    <span className="draggable-marquee__caption-text">
-                      {item.caption}
-                    </span>
+                    {item.caption && (
+                      <span className="draggable-marquee__caption-text">
+                        {item.caption}
+                      </span>
+                    )}
+                    {item.date && (
+                      <span className="draggable-marquee__caption-date">
+                        {item.date}
+                      </span>
+                    )}
                   </div>
                 )}
               </>

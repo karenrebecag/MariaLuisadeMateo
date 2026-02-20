@@ -2,6 +2,7 @@ export interface InstagramPost {
   src: string;
   alt: string;
   caption?: string;
+  date?: string;
   link: string;
 }
 
@@ -40,17 +41,22 @@ export async function getInstagramPosts(
 
     if (!edges.length) return null;
 
-    return edges.slice(0, 12).map((edge: unknown, i: number) => {
+    return edges.slice(0, 12).map((edge: unknown) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const node = (edge as any).node;
       const caption: string =
         node?.edge_media_to_caption?.edges?.[0]?.node?.text ?? "";
       const text = caption.slice(0, 120) || "Obra de María Luisa de Mateo";
+      const timestamp = node?.taken_at_timestamp as number | undefined;
+      const date = timestamp
+        ? new Date(timestamp * 1000).toISOString().slice(0, 10)
+        : undefined;
       return {
         // Route through our proxy to bypass Instagram CDN's CORP header
         src: `/api/ig-proxy?url=${encodeURIComponent(node.display_url as string)}`,
         alt: text,
         caption: text,
+        date,
         link: `https://www.instagram.com/p/${node.shortcode}/`,
       };
     });

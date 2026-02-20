@@ -1,109 +1,103 @@
-"use client";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getTranslations } from "next-intl/server";
+import { ALL_IMAGES } from "@/src/data/gallery-images";
+import { ArtworkView, ArtworkNotFound } from "@/src/components/templates/ArtworkView";
 
-import { use } from "react";
-import Image from "next/image";
-import { useTranslations } from "next-intl";
-import { SmoothScrollWrapper } from "@/src/components/templates/SmoothScrollWrapper";
-import { usePageTransitionNav } from "@/src/lib/transition-context";
+const SITE_URL = "https://demateo.mx";
 
-const paintings = [
-  { src: "/images/carlota.webp", title: "Carlota", slug: "carlota", year: "2023", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "120 × 90 cm" },
-  { src: "/images/tempestades.webp", title: "Tempestades", slug: "tempestades", year: "2023", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "150 × 100 cm" },
-  { src: "/images/adolescentes.webp", title: "Adolescentes", slug: "adolescentes", year: "2022", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "130 × 95 cm" },
-  { src: "/images/repeticiones.webp", title: "Repeticiones", slug: "repeticiones", year: "2022", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "100 × 80 cm" },
-  { src: "/images/enfrascados.webp", title: "Enfrascados", slug: "enfrascados", year: "2021", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "110 × 85 cm" },
-  { src: "/images/zanates.webp", title: "Zanates", slug: "zanates", year: "2021", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "140 × 100 cm" },
-  { src: "/images/retratos.webp", title: "Retratos", slug: "retratos", year: "2020", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "90 × 70 cm" },
-  { src: "/images/hojas.webp", title: "Hojas", slug: "hojas", year: "2020", technique: { es: "Óleo sobre tela", en: "Oil on canvas" }, dimensions: "100 × 80 cm" },
-  { src: "/images/realismo.webp", title: "Realismo Abstracto", slug: "realismo-abstracto", year: "2019", technique: { es: "Técnica mixta sobre tela", en: "Mixed media on canvas" }, dimensions: "120 × 100 cm" },
-  { src: "/images/dibujo.webp", title: "Dibujos", slug: "dibujos", year: "2019", technique: { es: "Grafito sobre papel", en: "Graphite on paper" }, dimensions: "50 × 35 cm" },
-];
+export function generateStaticParams() {
+  return ALL_IMAGES.map((img) => ({ slug: img.slug }));
+}
 
-export default function ArtworkPage({
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string; locale: string }>;
+}): Promise<Metadata> {
+  const { slug, locale } = await params;
+  const artwork = ALL_IMAGES.find((img) => img.slug === slug);
+
+  if (!artwork) {
+    return { title: "Obra no encontrada" };
+  }
+
+  const t = await getTranslations({ locale, namespace: "metadata" });
+  const artistName = "Maria Luisa de Mateo";
+  const title = `${artwork.alt} — ${artistName}`;
+  const description =
+    locale === "es"
+      ? `"${artwork.alt}" — Obra de ${artistName}. Pintura al óleo. Portafolio de arte realista.`
+      : `"${artwork.alt}" — Artwork by ${artistName}. Oil painting. Realist art portfolio.`;
+
+  const localePath = locale === "es" ? "" : `/${locale}`;
+  const canonicalUrl = `${SITE_URL}${localePath}/artwork/${slug}`;
+
+  return {
+    title: artwork.alt,
+    description,
+    alternates: {
+      canonical: canonicalUrl,
+      languages: {
+        es: `${SITE_URL}/artwork/${slug}`,
+        en: `${SITE_URL}/en/artwork/${slug}`,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url: canonicalUrl,
+      type: "article",
+      images: [
+        {
+          url: artwork.src,
+          alt: artwork.alt,
+        },
+      ],
+      locale: locale === "es" ? "es_MX" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [artwork.src],
+    },
+  };
+}
+
+export default async function ArtworkPage({
   params,
 }: {
   params: Promise<{ slug: string; locale: string }>;
 }) {
-  const { slug, locale } = use(params);
-  const { navigateWithTransition } = usePageTransitionNav();
-  const t = useTranslations("artwork");
+  const { slug, locale } = await params;
+  const artwork = ALL_IMAGES.find((img) => img.slug === slug);
 
-  const painting = paintings.find((p) => p.slug === slug);
-
-  if (!painting) {
-    return (
-      <SmoothScrollWrapper>
-        <main className="flex min-h-screen items-center justify-center">
-          <div className="text-center">
-            <h1 className="font-serif text-4xl">{t("notFound")}</h1>
-            <button
-              onClick={() => navigateWithTransition(`/${locale}`)}
-              className="mt-6 text-sm uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {t("backToGallery")}
-            </button>
-          </div>
-        </main>
-      </SmoothScrollWrapper>
-    );
+  if (!artwork) {
+    return <ArtworkNotFound locale={locale} />;
   }
 
-  const technique = locale === "en" ? painting.technique.en : painting.technique.es;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "VisualArtwork",
+    name: artwork.alt,
+    image: artwork.src,
+    url: `${SITE_URL}/${locale}/artwork/${slug}`,
+    artist: {
+      "@type": "Person",
+      name: "Maria Luisa de Mateo Venturini",
+    },
+    artMedium: "Oil on canvas",
+    artform: "Painting",
+  };
 
   return (
-    <SmoothScrollWrapper>
-      <main className="flex min-h-screen flex-col px-6 pt-12 pb-24 md:px-12 lg:px-20">
-        <button
-          onClick={() => navigateWithTransition(`/${locale}`)}
-          className="mb-12 self-start text-sm uppercase tracking-[0.15em] text-muted-foreground transition-colors hover:text-foreground"
-        >
-          {t("back")}
-        </button>
-
-        <div className="flex flex-1 flex-col items-center justify-center gap-10 md:flex-row md:gap-16">
-          <div className="relative aspect-[3/4] w-[240px] shrink-0 overflow-hidden rounded-2xl bg-secondary md:w-[280px] lg:w-[320px]">
-            <Image
-              src={painting.src}
-              alt={painting.title}
-              fill
-              sizes="320px"
-              className="object-cover"
-              priority
-            />
-          </div>
-
-          <div className="max-w-sm">
-            <h1 className="font-serif text-4xl leading-tight tracking-tight md:text-5xl">
-              {painting.title}
-            </h1>
-
-            <div className="mt-8 space-y-4 border-t border-border pt-8">
-              <div className="flex justify-between gap-8">
-                <span className="text-sm uppercase tracking-[0.15em] text-muted-foreground">
-                  {t("year")}
-                </span>
-                <span className="text-sm">{painting.year}</span>
-              </div>
-              <div className="flex justify-between gap-8">
-                <span className="text-sm uppercase tracking-[0.15em] text-muted-foreground">
-                  {t("technique")}
-                </span>
-                <span className="text-sm text-right">{technique}</span>
-              </div>
-              <div className="flex justify-between gap-8">
-                <span className="text-sm uppercase tracking-[0.15em] text-muted-foreground">
-                  {t("dimensions")}
-                </span>
-                <span className="text-sm">{painting.dimensions}</span>
-              </div>
-            </div>
-
-            <p className="mt-8 text-sm leading-relaxed text-muted-foreground">
-              {t("descriptionSoon")}
-            </p>
-          </div>
-        </div>
-      </main>
-    </SmoothScrollWrapper>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ArtworkView artwork={artwork} locale={locale} />
+    </>
   );
 }

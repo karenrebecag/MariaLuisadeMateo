@@ -4,28 +4,14 @@ import { Text } from "@/src/components/atoms/Typography";
 import { RevealOnScroll } from "@/src/components/atoms/RevealOnScroll";
 import { DraggableMarquee, type MarqueeItem } from "./DraggableMarquee";
 import { getInstagramPosts } from "@/src/lib/instagram";
+import { INSTAGRAM_FALLBACK } from "@/src/data/instagram-fallback";
 
 const INSTAGRAM_USERNAME = "maria_luisa_de_mateo";
-
-/** Static fallback — uses the artwork already in /public/images */
-const FALLBACK_ITEMS: MarqueeItem[] = [
-  { src: "/images/carlota.webp",      alt: "Carlota",      caption: "Carlota" },
-  { src: "/images/retratos.webp",     alt: "Retratos",     caption: "Retratos" },
-  { src: "/images/adolescentes.webp", alt: "Adolescentes", caption: "Adolescentes" },
-  { src: "/images/enfrascados.webp",  alt: "Enfrascados",  caption: "Enfrascados" },
-  { src: "/images/hojas.webp",        alt: "Hojas",        caption: "Hojas" },
-  { src: "/images/zanates.webp",      alt: "Zanates",      caption: "Zanates" },
-  { src: "/images/realismo.webp",     alt: "Realismo",     caption: "Realismo" },
-  { src: "/images/repeticiones.webp", alt: "Repeticiones", caption: "Repeticiones" },
-  { src: "/images/tempestades.webp",  alt: "Tempestades",  caption: "Tempestades" },
-  { src: "/images/dibujo.webp",       alt: "Dibujo",       caption: "Dibujo" },
-  { src: "/images/maria-luisa.webp",  alt: "María Luisa",  caption: "María Luisa" },
-];
 
 export async function InstagramStrip() {
   const t = await getTranslations("instagram");
   const posts = await getInstagramPosts(INSTAGRAM_USERNAME);
-  const items: MarqueeItem[] = posts ?? FALLBACK_ITEMS;
+  const items: MarqueeItem[] = posts?.length ? posts : INSTAGRAM_FALLBACK;
 
   return (
     <section id="instagram" className="noise-bg" aria-label={t("ariaLabel")}>

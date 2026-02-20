@@ -1,11 +1,12 @@
 {
   "metadata": {
-    "title": "Maria Luisa de Mateo",
-    "description": "Portafolio de arte de Maria Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta."
+    "title": "Maria Luisa de Mateo — Artista Mexicana | Pintura Realista",
+    "description": "Portafolio de Maria Luisa de Mateo Venturini, artista mexicana. Pintura realista al óleo: retratos, realismo abstracto, paisajes y naturaleza muerta. UNAM · UC Berkeley · 30+ exposiciones."
   },
   "nav": {
-    "works": "Obras",
     "bio": "Bio",
+    "obras": "Obras",
+    "instagram": "Instagram",
     "contact": "Contacto"
   },
   "header": {
@@ -71,9 +72,12 @@
     "emailError": "Ingresa un correo válido",
     "subjectError": "Selecciona un asunto",
     "messageError": "El mensaje debe tener al menos 10 caracteres",
+    "sending": "Enviando...",
     "successLabel": "Recibido",
     "successTitle": "Gracias por escribir",
-    "successMessage": "Te responderé a la brevedad."
+    "successMessage": "Te responderé a la brevedad.",
+    "errorGeneric": "Algo salió mal. Intenta de nuevo.",
+    "errorRecaptcha": "Verificación de seguridad fallida. Intenta de nuevo."
   },
   "instagram": {
     "label": "Instagram",
