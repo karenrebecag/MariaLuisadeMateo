@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { contactSchema } from "@/src/lib/contact-schema";
 
-const RECIPIENT_EMAIL = "marialuisa@demateo.mx";
+// TODO: change to marialuisa@demateo.mx after verifying domain in Resend
+const RECIPIENT_EMAIL = "karen.ortizg@yahoo.com";
 const SCORE_THRESHOLD = 0.5;
 
 function getResend() {
