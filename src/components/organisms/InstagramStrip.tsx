@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Text } from "@/src/components/atoms/Typography";
+import { RevealOnScroll } from "@/src/components/atoms/RevealOnScroll";
 import { DraggableMarquee, type MarqueeItem } from "./DraggableMarquee";
 import { getInstagramPosts } from "@/src/lib/instagram";
 
@@ -27,7 +28,7 @@ export async function InstagramStrip() {
   return (
     <section id="instagram" className="noise-bg" aria-label="Instagram de María Luisa de Mateo">
       {/* Section header */}
-      <div className="section-padding pb-0">
+      <RevealOnScroll className="section-padding pb-0" selector=".flex > *">
         <div className="max-width">
           <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
             {/* Left — heading block */}
@@ -59,12 +60,12 @@ export async function InstagramStrip() {
             </div>
           </div>
         </div>
-      </div>
+      </RevealOnScroll>
 
       {/* Full-bleed draggable marquee */}
-      <div className="mt-10 pb-[var(--section-py)]">
+      <RevealOnScroll className="mt-10 pb-[var(--section-py)]" selector=":scope > *">
         <DraggableMarquee items={items} direction="left" duration={40} />
-      </div>
+      </RevealOnScroll>
     </section>
   );
 }

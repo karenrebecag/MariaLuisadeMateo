@@ -1027,7 +1027,6 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
 
 .aw-grid__card-details {
   margin-top: 0.875em;
-  height: 3.5em;
   overflow: hidden;
 }
 
@@ -1049,6 +1048,15 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
   transition: opacity 0.2s;
 }
 
+.aw-grid__card-price {
+  font-size: 0.8125em;
+  font-weight: 500;
+  color: var(--card-foreground);
+  margin: 0.25em 0 0;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
 /* Large layout — 3 columns */
 [data-layout-status="large"].aw-grid {
   --aw-cols: 3;
@@ -1065,7 +1073,8 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
   font-size: 0.875em;
 }
 
-[data-layout-status="small"].aw-grid .aw-grid__card-sub {
+[data-layout-status="small"].aw-grid .aw-grid__card-sub,
+[data-layout-status="small"].aw-grid .aw-grid__card-price {
   opacity: 0;
   pointer-events: none;
 }

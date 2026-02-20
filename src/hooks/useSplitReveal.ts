@@ -2,11 +2,15 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger, SplitText } from "@/src/lib/gsap-registry";
+import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 
 export function useSplitReveal() {
   const ref = useRef<HTMLDivElement>(null);
+  const ready = useTransitionReady();
 
   useEffect(() => {
+    if (!ready) return;
+
     const container = ref.current;
     if (!container) return;
 
@@ -48,7 +52,7 @@ export function useSplitReveal() {
     return () => {
       splits.forEach((s) => s.revert());
     };
-  }, []);
+  }, [ready]);
 
   return ref;
 }

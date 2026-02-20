@@ -1,14 +1,113 @@
 "use client";
 
-export function Footer() {
-  return (
-    <footer className="sticky-footer">
-      <div className="sticky-footer__container">
-        <div className="sticky-footer__content">
+import { useEffect, useRef } from "react";
+import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
+import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 
-          {/* Logo — white, no draw animation needed in footer */}
+export function Footer() {
+  const footerRef = useRef<HTMLElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const animated = useRef(false);
+  const ready = useTransitionReady();
+
+  useEffect(() => {
+    if (!ready) return;
+
+    const footer = footerRef.current;
+    const svg = svgRef.current;
+    const content = contentRef.current;
+    if (!footer || !svg || !content) return;
+
+    const paths = svg.querySelectorAll<SVGPathElement>("path");
+    const lengths: number[] = [];
+
+    // Prepare paths for draw animation — start invisible (stroke only, no fill)
+    paths.forEach((path, i) => {
+      const len = path.getTotalLength();
+      lengths[i] = len;
+      gsap.set(path, {
+        fill: "transparent",
+        stroke: "white",
+        strokeWidth: 1.2,
+        strokeDasharray: len,
+        strokeDashoffset: len,
+        opacity: 1,
+      });
+    });
+
+    // Hide social + copy for stagger reveal
+    const extras = content.querySelectorAll<HTMLElement>(
+      ".sticky-footer__socials, .sticky-footer__copy"
+    );
+    gsap.set(extras, { y: 20, autoAlpha: 0 });
+
+    const st = ScrollTrigger.create({
+      trigger: footer,
+      start: "top 95%",
+      once: true,
+      onEnter: () => {
+        if (animated.current) return;
+        animated.current = true;
+
+        const tl = gsap.timeline({ defaults: { ease: "none" } });
+
+        // Phase 1: Draw stroke
+        paths.forEach((path, i) => {
+          tl.to(
+            path,
+            {
+              strokeDashoffset: 0,
+              duration: 1.6,
+              ease: "power3.out",
+            },
+            i * 0.2
+          );
+        });
+
+        // Phase 2: Crossfade — fill in white, stroke fades out
+        const fillStart = 0.8;
+        paths.forEach((path, i) => {
+          const offset = fillStart + i * 0.1;
+          tl.to(
+            path,
+            { fill: "white", duration: 0.8, ease: "power2.inOut" },
+            offset
+          );
+          tl.to(
+            path,
+            { strokeWidth: 0, duration: 1, ease: "power2.inOut" },
+            offset
+          );
+        });
+
+        // Phase 3: Reveal socials + copy
+        tl.to(
+          extras,
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            ease: "power4.inOut",
+            stagger: 0.12,
+          },
+          0.6
+        );
+      },
+    });
+
+    return () => st.kill();
+  }, [ready]);
+
+  return (
+    <footer ref={footerRef} className="sticky-footer">
+      <div className="sticky-footer__container">
+        <div ref={contentRef} className="sticky-footer__content">
+
+          {/* Logo — draw animation on scroll */}
           <a href="/" className="sticky-footer__logo" aria-label="de Mateo — Inicio">
             <svg
+              ref={svgRef}
               viewBox="0 0 336.5 202.5"
               fill="white"
               xmlns="http://www.w3.org/2000/svg"

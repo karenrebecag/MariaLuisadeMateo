@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
+import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 
 interface UseRevealOptions {
   y?: number;
@@ -19,8 +20,11 @@ export function useReveal({
   childSelector,
 }: UseRevealOptions = {}) {
   const ref = useRef<HTMLDivElement>(null);
+  const ready = useTransitionReady();
 
   useEffect(() => {
+    if (!ready) return;
+
     const el = ref.current;
     if (!el) return;
 
@@ -49,7 +53,7 @@ export function useReveal({
     return () => {
       trigger.kill();
     };
-  }, [y, duration, delay, stagger, childSelector]);
+  }, [ready, y, duration, delay, stagger, childSelector]);
 
   return ref;
 }

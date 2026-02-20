@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
+import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 
 const stats = [
@@ -16,8 +17,11 @@ const stats = [
 export function Bio() {
   const sectionRef = useSplitReveal();
   const statsRef = useRef<HTMLDivElement>(null);
+  const ready = useTransitionReady();
 
   useEffect(() => {
+    if (!ready) return;
+
     const container = statsRef.current;
     if (!container) return;
 
@@ -44,7 +48,7 @@ export function Bio() {
     });
 
     return () => st.kill();
-  }, []);
+  }, [ready]);
 
   return (
     <section id="bio" className="noise-bg section-padding pb-0">

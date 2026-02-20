@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, type FormEvent } from "react";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
+import { useTransitionReady } from "@/src/hooks/useTransitionReady";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
 import { cn } from "@/lib/utils";
 
@@ -22,11 +23,14 @@ export function ContactForm() {
   const leftRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [mounted, setMounted] = useState(false);
+  const ready = useTransitionReady();
 
   useEffect(() => setMounted(true), []);
 
-  // Stagger reveal — left info + form fields
+  // Stagger reveal — left info + form fields (wait for page transition)
   useEffect(() => {
+    if (!ready) return;
+
     const left = leftRef.current;
     const form = formRef.current;
     if (!left || !form) return;
@@ -41,12 +45,10 @@ export function ContactForm() {
     const isInView = rect.top < window.innerHeight * 0.82;
 
     if (isInView) {
-      // Already visible - show immediately without animation
       gsap.set(items, { y: 0, autoAlpha: 1 });
       return;
     }
 
-    // Not in view yet - set up ScrollTrigger animation
     gsap.set(items, { y: 40, autoAlpha: 0 });
 
     const st = ScrollTrigger.create({
@@ -66,7 +68,7 @@ export function ContactForm() {
     });
 
     return () => st.kill();
-  }, [mounted]);
+  }, [mounted, ready]);
 
   const [fields, setFields] = useState<Record<string, FieldState>>({
     name: { value: "", touched: false, valid: false },

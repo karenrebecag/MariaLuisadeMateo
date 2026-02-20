@@ -15,10 +15,8 @@ export function useLenis() {
 
     lenisRef.current = lenis;
 
-    // Connect Lenis to ScrollTrigger (Osmo pattern)
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-    });
+    // Connect Lenis → ScrollTrigger
+    lenis.on("scroll", ScrollTrigger.update);
 
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
@@ -41,7 +39,7 @@ export function useLenis() {
       lenis.scrollTo(href, {
         duration: 1.2,
         easing: (x: number) => (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2),
-        offset: -80, // Offset for fixed header if needed
+        offset: -80,
       });
     };
 
