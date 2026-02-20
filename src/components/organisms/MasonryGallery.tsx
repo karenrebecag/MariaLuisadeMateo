@@ -1,57 +1,64 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import Image from "next/image";
 import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
-import { usePageTransitionNav } from "@/src/lib/transition-context";
+import {
+  ALL_IMAGES,
+  shuffleImages,
+  DESKTOP_COUNT,
+} from "@/src/data/gallery-images";
 
-// Real paintings from demateo.mx — repeated across columns
-const paintings = [
-  { src: "/images/carlota.webp", alt: "Carlota", slug: "carlota" },
-  { src: "/images/tempestades.webp", alt: "Tempestades", slug: "tempestades" },
-  { src: "/images/adolescentes.webp", alt: "Adolescentes", slug: "adolescentes" },
-  { src: "/images/repeticiones.webp", alt: "Repeticiones", slug: "repeticiones" },
-  { src: "/images/enfrascados.webp", alt: "Enfrascados", slug: "enfrascados" },
-  { src: "/images/zanates.webp", alt: "Zanates", slug: "zanates" },
-  { src: "/images/retratos.webp", alt: "Retratos", slug: "retratos" },
-  { src: "/images/hojas.webp", alt: "Hojas", slug: "hojas" },
-  { src: "/images/realismo.webp", alt: "Realismo Abstracto", slug: "realismo-abstracto" },
-  { src: "/images/dibujo.webp", alt: "Dibujos", slug: "dibujos" },
+// Aspect-ratio cycle applied per item index
+const ASPECT_CYCLE = [
+  "aspect-[3/4]", "aspect-[4/3]", "aspect-square",
+  "aspect-[3/4]", "aspect-[4/3]",
 ];
 
-// Build 10 columns x 5 items each, cycling through paintings
-const columns = Array.from({ length: 10 }, (_, colIdx) => {
-  const aspects = [
-    ["aspect-[3/4]", "aspect-[4/3]", "aspect-square", "aspect-[3/4]", "aspect-[4/3]"],
-    ["aspect-[4/3]", "aspect-[3/4]", "aspect-[4/3]", "aspect-square", "aspect-[3/4]"],
-    ["aspect-square", "aspect-[3/4]", "aspect-[4/3]", "aspect-[3/4]", "aspect-square"],
-    ["aspect-[3/4]", "aspect-square", "aspect-[3/4]", "aspect-[4/3]", "aspect-[3/4]"],
-    ["aspect-[4/3]", "aspect-[3/4]", "aspect-square", "aspect-[3/4]", "aspect-[4/3]"],
-    ["aspect-square", "aspect-[4/3]", "aspect-[3/4]", "aspect-square", "aspect-[3/4]"],
-    ["aspect-[3/4]", "aspect-[3/4]", "aspect-[4/3]", "aspect-[3/4]", "aspect-square"],
-    ["aspect-[4/3]", "aspect-square", "aspect-[3/4]", "aspect-[4/3]", "aspect-[3/4]"],
-    ["aspect-square", "aspect-[3/4]", "aspect-[4/3]", "aspect-[3/4]", "aspect-[4/3]"],
-    ["aspect-[3/4]", "aspect-[4/3]", "aspect-square", "aspect-[4/3]", "aspect-[3/4]"],
-  ];
+const COLS = 10;
 
-  return Array.from({ length: 5 }, (_, itemIdx) => {
-    const paintingIdx = (colIdx * 5 + itemIdx) % paintings.length;
-    return {
-      src: paintings[paintingIdx].src,
-      alt: paintings[paintingIdx].alt,
-      slug: paintings[paintingIdx].slug,
-      aspect: aspects[colIdx][itemIdx],
-    };
-  });
-});
+// Map aspect class to approximate height ratio (relative to width = 1)
+const ASPECT_HEIGHT: Record<string, number> = {
+  "aspect-[3/4]": 4 / 3,
+  "aspect-[4/3]": 3 / 4,
+  "aspect-square": 1,
+};
 
 export function MasonryGallery() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const introRef = useRef<HTMLDivElement>(null);
-  const { navigateWithTransition } = usePageTransitionNav();
+  // Randomize images once on mount
+  const [columns, setColumns] = useState<
+    { src: string; alt: string; aspect: string }[][]
+  >([]);
 
   useEffect(() => {
+    const shuffled = shuffleImages(ALL_IMAGES).slice(0, DESKTOP_COUNT);
+    // Distribute items into the shortest column (by accumulated height)
+    const cols: { src: string; alt: string; aspect: string }[][] = Array.from(
+      { length: COLS },
+      () => []
+    );
+    const colHeights = new Array(COLS).fill(0);
+
+    shuffled.forEach((img, i) => {
+      const aspect = ASPECT_CYCLE[i % ASPECT_CYCLE.length];
+      // Find the column with the smallest accumulated height
+      let minIdx = 0;
+      for (let c = 1; c < COLS; c++) {
+        if (colHeights[c] < colHeights[minIdx]) minIdx = c;
+      }
+      cols[minIdx].push({ src: img.src, alt: img.alt, aspect });
+      colHeights[minIdx] += ASPECT_HEIGHT[aspect] ?? 1;
+    });
+
+    setColumns(cols);
+  }, []);
+
+  useEffect(() => {
+    if (columns.length === 0) return;
+
     const wrap = wrapRef.current;
     const track = trackRef.current;
     const intro = introRef.current;
@@ -122,7 +129,12 @@ export function MasonryGallery() {
         .forEach((s) => s.kill());
       gsap.set(track, { clearProps: "x" });
     };
-  }, []);
+  }, [columns]);
+
+  // Don't render grid until shuffled
+  if (columns.length === 0) {
+    return <section id="gallery" className="noise-bg h-screen" />;
+  }
 
   return (
     <section id="gallery" className="noise-bg">
@@ -189,15 +201,6 @@ export function MasonryGallery() {
                 <div
                   key={itemIdx}
                   className={`masonry-hover relative w-full overflow-hidden rounded-2xl ${item.aspect}`}
-                  onClick={() => navigateWithTransition(`/artwork/${item.slug}`)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      navigateWithTransition(`/artwork/${item.slug}`);
-                    }
-                  }}
                 >
                   <Image
                     src={item.src}
