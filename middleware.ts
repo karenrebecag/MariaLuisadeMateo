@@ -7,13 +7,18 @@ const intlMiddleware = createMiddleware(routing);
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Add CDN cache headers for image proxy routes
-  if (pathname.startsWith("/api/ig-proxy") || pathname.startsWith("/api/artsy-proxy")) {
+  // Skip i18n for all API routes
+  if (pathname.startsWith("/api/")) {
     const response = NextResponse.next();
-    response.headers.set(
-      "Cache-Control",
-      "public, s-maxage=3600, stale-while-revalidate=7200",
-    );
+
+    // Add CDN cache headers for image proxy routes
+    if (pathname.startsWith("/api/ig-proxy") || pathname.startsWith("/api/artsy-proxy")) {
+      response.headers.set(
+        "Cache-Control",
+        "public, s-maxage=3600, stale-while-revalidate=7200",
+      );
+    }
+
     return response;
   }
 

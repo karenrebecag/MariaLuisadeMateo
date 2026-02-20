@@ -300,6 +300,11 @@ export function ContactForm() {
               >
                 {isSubmitting ? t("sending") : t("submit")}
               </button>
+              <p className="mt-4 text-[10px] leading-relaxed text-muted-foreground/50">
+                This site is protected by reCAPTCHA and the Google{" "}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline">Privacy Policy</a> and{" "}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline">Terms of Service</a> apply.
+              </p>
             </div>
           </form>
         </div>

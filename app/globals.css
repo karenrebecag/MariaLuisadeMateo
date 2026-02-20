@@ -4,6 +4,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Hide reCAPTCHA v3 badge — attribution is included in the form footer */
+.grecaptcha-badge { visibility: hidden !important; }
+
 /* ── @property: register CSS vars as <color> so they can animate ── */
 @property --background {
   syntax: "<color>";
