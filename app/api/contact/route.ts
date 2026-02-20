@@ -12,17 +12,26 @@ function getResend() {
 }
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secret) {
+    console.error("RECAPTCHA_SECRET_KEY is not set");
+    return false;
+  }
+
   const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      secret: process.env.RECAPTCHA_SECRET_KEY ?? "",
-      response: token,
-    }),
+    body: new URLSearchParams({ secret, response: token }),
   });
 
   const data = await res.json();
-  return data.success === true && (data.score ?? 0) >= SCORE_THRESHOLD;
+  console.log("reCAPTCHA response:", JSON.stringify(data));
+
+  // v3 returns a score (0.0–1.0), v2 returns only success boolean
+  if (data.score !== undefined) {
+    return data.success === true && data.score >= SCORE_THRESHOLD;
+  }
+  return data.success === true;
 }
 
 const SUBJECT_LABELS: Record<string, string> = {
@@ -57,7 +66,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send email via Resend
-    const { error } = await getResend().emails.send({
+    const { data, error } = await getResend().emails.send({
       from: "Portafolio <onboarding@resend.dev>",
       to: RECIPIENT_EMAIL,
       replyTo: email,
@@ -72,13 +81,18 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json({ error: "email" }, { status: 500 });
+      console.error("Resend error:", JSON.stringify(error));
+      return NextResponse.json(
+        { error: "email", detail: error.message },
+        { status: 500 }
+      );
     }
 
+    console.log("Email sent:", data?.id);
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Contact API error:", err);
-    return NextResponse.json({ error: "server" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: "server", detail: message }, { status: 500 });
   }
 }
