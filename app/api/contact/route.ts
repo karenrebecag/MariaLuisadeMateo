@@ -2,18 +2,21 @@ import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { contactSchema } from "@/src/lib/contact-schema";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const RECAPTCHA_SECRET = process.env.RECAPTCHA_SECRET_KEY!;
 const RECIPIENT_EMAIL = "marialuisa@demateo.mx";
 const SCORE_THRESHOLD = 0.5;
+
+function getResend() {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) throw new Error("RESEND_API_KEY is not set");
+  return new Resend(key);
+}
 
 async function verifyRecaptcha(token: string): Promise<boolean> {
   const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
-      secret: RECAPTCHA_SECRET,
+      secret: process.env.RECAPTCHA_SECRET_KEY ?? "",
       response: token,
     }),
   });
@@ -54,7 +57,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Send email via Resend
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: "Portafolio <onboarding@resend.dev>",
       to: RECIPIENT_EMAIL,
       replyTo: email,
