@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect, useEffect } from "react";
+import { useState, useRef, useLayoutEffect } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Text } from "@/src/components/atoms/Typography";
-import { gsap, Flip, ScrollTrigger } from "@/src/lib/gsap-registry";
-import { useTransitionReady } from "@/src/hooks/useTransitionReady";
+import { gsap, Flip } from "@/src/lib/gsap-registry";
+import { useScrollReveal } from "@/src/hooks/useScrollReveal";
 import { usePageTransitionNav } from "@/src/lib/transition-context";
 
 export interface WorkItem {
@@ -46,41 +46,8 @@ export function AvailableWorks({ works: externalWorks }: AvailableWorksProps) {
   const headerRef = useRef<HTMLDivElement>(null);
   const activeTweenRef = useRef<gsap.core.Timeline | null>(null);
   const { navigateWithTransition } = usePageTransitionNav();
-  const ready = useTransitionReady();
 
-  // Reveal animation for header + grid
-  useEffect(() => {
-    if (!ready) return;
-
-    const header = headerRef.current;
-    const grid = groupRef.current;
-    if (!header || !grid) return;
-
-    const items = [
-      ...Array.from(header.querySelectorAll<HTMLElement>(":scope > *")),
-      grid,
-    ];
-
-    gsap.set(items, { y: 48, autoAlpha: 0 });
-
-    const st = ScrollTrigger.create({
-      trigger: header,
-      start: "top 82%",
-      once: true,
-      onEnter: () => {
-        gsap.to(items, {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.85,
-          ease: "power4.inOut",
-          stagger: 0.12,
-          onComplete: () => { gsap.set(items, { clearProps: "all" }); },
-        });
-      },
-    });
-
-    return () => st.kill();
-  }, [ready]);
+  useScrollReveal(headerRef, { extras: [groupRef] });
 
   const handleLayoutChange = (newLayout: "large" | "small") => {
     if (newLayout === activeLayout) return;

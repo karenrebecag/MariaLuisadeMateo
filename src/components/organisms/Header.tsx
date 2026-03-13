@@ -97,7 +97,19 @@ export function Header() {
     return () => document.removeEventListener("keydown", onKey);
   }, [navActive, closeNav, toggleTheme]);
 
+  const pendingScroll = useRef<number | null>(null);
+
+  // Restore scroll position after locale change re-render
+  useEffect(() => {
+    if (pendingScroll.current !== null) {
+      const y = pendingScroll.current;
+      pendingScroll.current = null;
+      requestAnimationFrame(() => window.scrollTo(0, y));
+    }
+  }, [locale]);
+
   const switchLocale = useCallback(() => {
+    pendingScroll.current = window.scrollY;
     const nextLocale = locale === "es" ? "en" : "es";
     router.replace(pathname, { locale: nextLocale });
   }, [locale, router, pathname]);

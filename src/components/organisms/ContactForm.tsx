@@ -9,8 +9,7 @@ import { toast } from "sonner";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
-import { useTransitionReady } from "@/src/hooks/useTransitionReady";
-import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
+import { useScrollReveal } from "@/src/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
 import { contactSchema, type ContactFormData, SUBJECT_VALUES } from "@/src/lib/contact-schema";
 
@@ -20,7 +19,6 @@ export function ContactForm() {
   const leftRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [mounted, setMounted] = useState(false);
-  const ready = useTransitionReady();
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const {
@@ -37,47 +35,13 @@ export function ContactForm() {
 
   useEffect(() => setMounted(true), []);
 
-  // Stagger reveal — left info + form fields (wait for page transition)
-  useEffect(() => {
-    if (!ready) return;
-
-    const left = leftRef.current;
-    const form = formRef.current;
-    if (!left || !form) return;
-
-    const items = [
-      ...Array.from(left.querySelectorAll<HTMLElement>("[data-reveal]")),
-      ...Array.from(form.querySelectorAll<HTMLElement>("[data-reveal]")),
-    ];
-
-    const rect = left.getBoundingClientRect();
-    const isInView = rect.top < window.innerHeight * 0.82;
-
-    if (isInView) {
-      gsap.set(items, { y: 0, autoAlpha: 1 });
-      return;
-    }
-
-    gsap.set(items, { y: 40, autoAlpha: 0 });
-
-    const st = ScrollTrigger.create({
-      trigger: left,
-      start: "top 82%",
-      once: true,
-      onEnter: () => {
-        gsap.to(items, {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.8,
-          ease: "power4.inOut",
-          stagger: 0.08,
-          onComplete: () => { gsap.set(items, { clearProps: "all" }); },
-        });
-      },
-    });
-
-    return () => st.kill();
-  }, [mounted, ready]);
+  useScrollReveal(leftRef, {
+    selector: "[data-reveal]",
+    extras: [formRef],
+    y: 40,
+    stagger: 0.08,
+    duration: 0.8,
+  });
 
   const onSubmit = useCallback(
     async (data: Omit<ContactFormData, "recaptchaToken">) => {

@@ -1,18 +1,16 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Heading, Text } from "@/src/components/atoms/Typography";
 import { Divider } from "@/src/components/atoms/Divider";
 import { useSplitReveal } from "@/src/hooks/useSplitReveal";
-import { useTransitionReady } from "@/src/hooks/useTransitionReady";
-import { gsap, ScrollTrigger } from "@/src/lib/gsap-registry";
+import { useScrollReveal } from "@/src/hooks/useScrollReveal";
 
 export function Bio() {
   const t = useTranslations("bio");
   const sectionRef = useSplitReveal();
   const statsRef = useRef<HTMLDivElement>(null);
-  const ready = useTransitionReady();
 
   const stats = [
     { value: t("stats.unamValue"), label: t("stats.unamLabel") },
@@ -21,36 +19,7 @@ export function Bio() {
     { value: t("stats.techniqueValue"), label: t("stats.techniqueLabel") },
   ];
 
-  useEffect(() => {
-    if (!ready) return;
-
-    const container = statsRef.current;
-    if (!container) return;
-
-    const items = Array.from(
-      container.querySelectorAll<HTMLElement>("[data-stat]")
-    );
-
-    gsap.set(items, { y: 48, autoAlpha: 0 });
-
-    const st = ScrollTrigger.create({
-      trigger: container,
-      start: "top 82%",
-      once: true,
-      onEnter: () => {
-        gsap.to(items, {
-          y: 0,
-          autoAlpha: 1,
-          duration: 0.85,
-          ease: "power4.inOut",
-          stagger: 0.1,
-          onComplete: () => { gsap.set(items, { clearProps: "all" }); },
-        });
-      },
-    });
-
-    return () => st.kill();
-  }, [ready]);
+  useScrollReveal(statsRef, { selector: "[data-stat]", stagger: 0.1 });
 
   return (
     <section id="bio" className="noise-bg section-padding pb-0">
