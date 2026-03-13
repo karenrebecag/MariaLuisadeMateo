@@ -1,27 +1,27 @@
 {
   "metadata": {
-    "title": "Maria Luisa de Mateo — Artista Mexicana | Pintura Realista",
-    "description": "Portafolio de Maria Luisa de Mateo Venturini, artista mexicana. Pintura realista al óleo: retratos, realismo abstracto, paisajes y naturaleza muerta. UNAM · UC Berkeley · 30+ exposiciones."
+    "title": "María Luisa de Mateo — Artista Mexicana | Pintura Realista",
+    "description": "Portafolio de María Luisa de Mateo Venturini, artista mexicana. Pintura realista al óleo: retratos, realismo abstracto, paisajes y naturaleza muerta. UNAM · UC Berkeley · 30+ exposiciones."
   },
   "nav": {
     "bio": "Bio",
-    "obras": "Obras",
+    "obras": "Obra disponible",
     "instagram": "Instagram",
     "contact": "Contacto"
   },
   "header": {
     "lightMode": "Modo claro",
     "darkMode": "Modo oscuro",
-    "closeMenu": "Cerrar menu",
-    "openMenu": "Abrir menu"
+    "closeMenu": "Cerrar menú",
+    "openMenu": "Abrir menú"
   },
   "hero": {
     "title": "El arte es la mentira que nos permite comprender la verdad",
     "subtitle": "Una colección curada de obras que exploran la luz, la forma y la condición humana."
   },
   "bio": {
-    "label": "Biografia",
-    "title": "Maria Luisa de Mateo",
+    "label": "Biografía",
+    "title": "María Luisa de Mateo",
     "stats": {
       "unamValue": "UNAM",
       "unamLabel": "Historia del Arte",
@@ -32,12 +32,12 @@
       "techniqueValue": "Óleo",
       "techniqueLabel": "Técnica principal"
     },
-    "p1": "La pintura de Maria Luisa de Mateo Venturini es realista por el simple placer de recrear momentos de realidad, texturas de realidad, emociones de realidad, inmersion en los colores de la realidad. Muy lejana al hiper realismo, muy cercana al realismo abstracto en el que la realidad se construye en base a manchas, en base a colores.",
-    "p2": "Nacio en Ciudad de Mexico. Estudio Historia con especialidad en Arte en la UNAM obteniendo Mencion Honorifica. Realizo estudios de posgrado en Historia del Arte, en la Universidad de California en Berkeley, USA.",
-    "p3": "En un despiste muy disfrutado, estudio una maestria en Economia en la UNAM, tambien con Mencion Honorifica, aun cuando siempre supo que su pasion era la pintura.",
-    "p4": "Sin paciencia para acudir a una formacion escolar, estudia, investiga y aprende de los grandes maestros, en particular de Velazquez, a quien copia y desmenuza. Posiblemente por su formacion de historiadora, su especialidad y mayor gozo es el retrato.",
-    "p5": "Aun cuando cualquier ejercicio con un pincel en la mano es igualmente gratificante. Sus pinturas estan en diferentes formatos, principalmente en oleo sobre tela, aun cuando tambien ha realizado grabados y serigrafias.",
-    "p6": "Ha realizado exposiciones tanto en Mexico como en el extranjero. Los diferentes temas en sus pinturas son expresiones de estas exposiciones."
+    "p1": "La pintura de María Luisa de Mateo Venturini es realista por el simple placer de recrear momentos de realidad, texturas de realidad, emociones de realidad, inmersión en los colores de la realidad. Muy lejana al hiper realismo, muy cercana al realismo abstracto en el que la realidad se construye en base a manchas, en base a colores.",
+    "p2": "Nació en Ciudad de México. Estudió Historia con especialidad en Arte en la UNAM obteniendo Mención Honorífica. Realizó estudios de posgrado en Historia del Arte, en la Universidad de California en Berkeley, USA.",
+    "p3": "En un despiste muy disfrutado, estudió una maestría en Economía en la UNAM, también con Mención Honorífica, aun cuando siempre supo que su pasión era la pintura.",
+    "p4": "Sin paciencia para acudir a una formación escolar, estudia, investiga y aprende de los grandes maestros, en particular de Velázquez, a quien copia y desmenuza. Posiblemente por su formación de historiadora, su especialidad y mayor gozo es el retrato.",
+    "p5": "Aun cuando cualquier ejercicio con un pincel en la mano es igualmente gratificante. Sus pinturas están en diferentes formatos, principalmente en óleo sobre tela, aun cuando también ha realizado grabados y serigrafías.",
+    "p6": "Ha realizado exposiciones tanto en México como en el extranjero. Los diferentes temas en sus pinturas son expresiones de estas exposiciones."
   },
   "availableWorks": {
     "label": "Adquisición",
@@ -87,7 +87,7 @@
     "ariaLabel": "Instagram de María Luisa de Mateo"
   },
   "footer": {
-    "copyright": "© 2026 Maria Luisa de Mateo. Todos los derechos reservados.",
+    "copyright": "© 2026 María Luisa de Mateo. Todos los derechos reservados.",
     "homeAriaLabel": "de Mateo — Inicio"
   },
   "gallery": {

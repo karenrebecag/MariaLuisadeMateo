@@ -141,11 +141,11 @@
 }
 
 .dark {
-  --background: #0a0a0a;
+  --background: #020202;
   --foreground: #f0ece4;
-  --card: #111111;
+  --card: #1a1a1a;
   --card-foreground: #f0ece4;
-  --popover: #111111;
+  --popover: #1a1a1a;
   --popover-foreground: #f0ece4;
   --primary: #d92626;
   --primary-foreground: #ffffff;
@@ -318,71 +318,6 @@ html.lenis, html.lenis body {
 ::selection {
   background: var(--primary);
   color: #ffffff;
-}
-
-/* =============================================
-   Custom Cursor
-   ============================================= */
-
-/* Hide native cursor everywhere */
-*, *::before, *::after {
-  cursor: none !important;
-}
-
-.cursor {
-  z-index: 9999;
-  background-color: var(--primary);
-  border: 1px solid var(--primary);
-  border-radius: 100em;
-  width: 1em;
-  height: 1em;
-  transition:
-    background-color .375s cubic-bezier(.625, .05, 0, 1),
-    border-color .375s cubic-bezier(.625, .05, 0, 1),
-    height .375s cubic-bezier(.625, .05, 0, 1),
-    width .375s cubic-bezier(.625, .05, 0, 1);
-  position: fixed;
-  inset: 0% auto auto 0%;
-  pointer-events: none;
-}
-
-/* Expand on interactive hover — red sections */
-body:has(a:hover) .cursor,
-body:has(button:hover) .cursor,
-body:has([data-cursor]:hover) .cursor {
-  width: 3em;
-  height: 3em;
-  background-color: rgba(196, 30, 30, 0.3);
-}
-
-/* White cursor in dark sections (stats strip + footer) */
-body:has(#stats:hover) .cursor,
-body:has(footer:hover) .cursor {
-  background-color: #ffffff;
-  border-color: #ffffff;
-}
-
-/* White expanded in dark sections */
-body:has(#stats:hover):has(a:hover) .cursor,
-body:has(#stats:hover):has(button:hover) .cursor,
-body:has(#stats:hover):has([data-cursor]:hover) .cursor,
-body:has(footer:hover):has(a:hover) .cursor,
-body:has(footer:hover):has(button:hover) .cursor,
-body:has(footer:hover):has([data-cursor]:hover) .cursor {
-  width: 3em;
-  height: 3em;
-  background-color: rgba(255, 255, 255, 0.3);
-  border-color: #ffffff;
-}
-
-/* Hide on touch devices, restore native cursor */
-@media (hover: none) and (pointer: coarse) {
-  .cursor {
-    display: none;
-  }
-  *, *::before, *::after {
-    cursor: auto !important;
-  }
 }
 
 /* =============================================
@@ -702,8 +637,7 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
   width: 100%;
   overflow: hidden;
   color: #ffffff;
-  /* Layer 1 (bottom): the original solid red */
-  background-color: var(--foreground);
+  background-color: #D92328;
 }
 
 /* Shared texture overlay — reutilizada en stats strip y footer */
@@ -777,7 +711,7 @@ body:has(footer:hover):has([data-cursor]:hover) .cursor {
 
 .sticky-footer__copy {
   color: rgba(255, 255, 255, 0.5);
-  font-size: 0.22em;
+  font-size: clamp(0.75rem, 2vw, 0.9rem);
   font-weight: 400;
   letter-spacing: 0.1em;
   margin: 0;

@@ -8,13 +8,13 @@ const SITE_URL = "https://demateo.mx";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Maria Luisa de Mateo — Artista Mexicana",
-    template: "%s | Maria Luisa de Mateo",
+    default: "María Luisa de Mateo — Artista Mexicana",
+    template: "%s | María Luisa de Mateo",
   },
   description:
-    "Portafolio de arte de Maria Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta. Óleo sobre tela.",
+    "Portafolio de arte de María Luisa de Mateo Venturini. Pintura realista, retratos, paisajes y naturaleza muerta. Óleo sobre tela.",
   keywords: [
-    "Maria Luisa de Mateo",
+    "María Luisa de Mateo",
     "artista mexicana",
     "pintura realista",
     "retratos al óleo",
@@ -25,11 +25,11 @@ export const metadata: Metadata = {
     "naturaleza muerta",
     "arte CDMX",
   ],
-  authors: [{ name: "Maria Luisa de Mateo Venturini" }],
-  creator: "Maria Luisa de Mateo Venturini",
+  authors: [{ name: "María Luisa de Mateo Venturini" }],
+  creator: "María Luisa de Mateo Venturini",
   openGraph: {
     type: "website",
-    siteName: "Maria Luisa de Mateo",
+    siteName: "María Luisa de Mateo",
     locale: "es_MX",
     alternateLocale: "en_US",
     images: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Maria Luisa de Mateo — Artista Mexicana",
+        alt: "María Luisa de Mateo — Artista Mexicana",
       },
     ],
   },

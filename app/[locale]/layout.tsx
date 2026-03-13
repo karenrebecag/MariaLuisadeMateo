@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import { TransitionProvider } from "@/src/lib/transition-context";
-import { CustomCursor } from "@/src/components/atoms/CustomCursor";
 import { RecaptchaProvider } from "@/src/components/providers/RecaptchaProvider";
 import { routing } from "@/src/i18n/routing";
 
@@ -27,7 +26,7 @@ export async function generateMetadata({
   return {
     title: {
       absolute: title,
-      template: `%s | Maria Luisa de Mateo`,
+      template: `%s | María Luisa de Mateo`,
     },
     description,
     alternates: {
@@ -54,7 +53,7 @@ function PersonJsonLd({ locale }: { locale: string }) {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Maria Luisa de Mateo Venturini",
+    name: "María Luisa de Mateo Venturini",
     jobTitle: locale === "es" ? "Artista Visual" : "Visual Artist",
     description:
       locale === "es"
@@ -101,7 +100,7 @@ function WebSiteJsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Maria Luisa de Mateo",
+    name: "María Luisa de Mateo",
     url: SITE_URL,
     inLanguage: ["es", "en"],
   };
@@ -132,7 +131,6 @@ export default async function LocaleLayout({
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
-          <CustomCursor />
           <RecaptchaProvider>
             <TransitionProvider>{children}</TransitionProvider>
           </RecaptchaProvider>

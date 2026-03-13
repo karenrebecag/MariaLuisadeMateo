@@ -23,7 +23,7 @@ export async function generateMetadata({
   }
 
   const t = await getTranslations({ locale, namespace: "metadata" });
-  const artistName = "Maria Luisa de Mateo";
+  const artistName = "María Luisa de Mateo";
   const title = `${artwork.alt} — ${artistName}`;
   const description =
     locale === "es"
@@ -85,7 +85,7 @@ export default async function ArtworkPage({
     url: `${SITE_URL}/${locale}/artwork/${slug}`,
     artist: {
       "@type": "Person",
-      name: "Maria Luisa de Mateo Venturini",
+      name: "María Luisa de Mateo Venturini",
     },
     artMedium: "Oil on canvas",
     artform: "Painting",

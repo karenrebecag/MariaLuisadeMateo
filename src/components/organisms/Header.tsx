@@ -17,7 +17,6 @@ export function Header() {
   const navLinks = [
     { label: t("bio"), href: "#bio" },
     { label: t("obras"), href: "#obras" },
-    { label: t("instagram"), href: "#instagram" },
   ];
 
   const [navActive, setNavActive] = useState(false);

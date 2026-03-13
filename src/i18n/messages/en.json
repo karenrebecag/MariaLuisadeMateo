@@ -1,11 +1,11 @@
 {
   "metadata": {
-    "title": "Maria Luisa de Mateo — Mexican Artist | Realist Painting",
-    "description": "Portfolio of Maria Luisa de Mateo Venturini, Mexican visual artist. Realist oil painting: portraits, abstract realism, landscapes and still life. UNAM · UC Berkeley · 30+ exhibitions."
+    "title": "María Luisa de Mateo — Mexican Artist | Realist Painting",
+    "description": "Portfolio of María Luisa de Mateo Venturini, Mexican visual artist. Realist oil painting: portraits, abstract realism, landscapes and still life. UNAM · UC Berkeley · 30+ exhibitions."
   },
   "nav": {
     "bio": "Bio",
-    "obras": "Works",
+    "obras": "Available works",
     "instagram": "Instagram",
     "contact": "Contact"
   },
@@ -21,7 +21,7 @@
   },
   "bio": {
     "label": "Biography",
-    "title": "Maria Luisa de Mateo",
+    "title": "María Luisa de Mateo",
     "stats": {
       "unamValue": "UNAM",
       "unamLabel": "Art History",
@@ -32,7 +32,7 @@
       "techniqueValue": "Oil",
       "techniqueLabel": "Primary technique"
     },
-    "p1": "The painting of Maria Luisa de Mateo Venturini is realist for the simple pleasure of recreating moments of reality, textures of reality, emotions of reality, immersion in the colors of reality. Far from hyperrealism, very close to abstract realism where reality is built through brushstrokes, through colors.",
+    "p1": "The painting of María Luisa de Mateo Venturini is realist for the simple pleasure of recreating moments of reality, textures of reality, emotions of reality, immersion in the colors of reality. Far from hyperrealism, very close to abstract realism where reality is built through brushstrokes, through colors.",
     "p2": "Born in Mexico City. She studied History with a specialization in Art at UNAM, graduating with honors. She completed graduate studies in Art History at the University of California, Berkeley, USA.",
     "p3": "In a much-enjoyed detour, she studied a master's in Economics at UNAM, also with honors, even though she always knew her passion was painting.",
     "p4": "Without patience for formal schooling, she studies, researches, and learns from the great masters, particularly Velázquez, whom she copies and dissects. Perhaps due to her training as a historian, her specialty and greatest joy is portraiture.",
@@ -87,7 +87,7 @@
     "ariaLabel": "María Luisa de Mateo's Instagram"
   },
   "footer": {
-    "copyright": "© 2026 Maria Luisa de Mateo. All rights reserved.",
+    "copyright": "© 2026 María Luisa de Mateo. All rights reserved.",
     "homeAriaLabel": "de Mateo — Home"
   },
   "gallery": {

@@ -178,6 +178,17 @@ export function Footer() {
                 <path d="M9.833 22V13.2H6.669V9.6H9.833V6.849C9.833 3.726 11.694 2 14.541 2C15.4757 2.01295 16.4082 2.09417 17.331 2.243V5.311H15.76C15.4921 5.27507 15.2196 5.29992 14.9626 5.38371C14.7057 5.4675 14.4709 5.60808 14.2757 5.79502C14.0805 5.98195 13.9299 6.21044 13.8351 6.46354C13.7403 6.71663 13.7037 6.98783 13.728 7.257V9.6H17.185L16.633 13.2H13.733V22H9.833Z" fill="currentColor"/>
               </svg>
             </a>
+            <a
+              href="https://www.artsy.net/artist/de-mateo"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Artsy"
+              className="sticky-footer__social-link"
+            >
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21 20.61H18.93L14.64 10.2H14.57L12.78 14.88L14.88 20.61H12.81L11.7 17.61L10.47 20.61H8.4L10.62 14.88L7.92 8.04H9.99L12.06 13.23H12.09L13.59 9.12H10.86L11.61 7.2H16.44L21 20.61ZM3 20.61V3H16.2V7.2H14.4V4.8H4.8V18.81H14.4V16.41H16.2V20.61H3Z" fill="currentColor"/>
+              </svg>
+            </a>
           </div>
 
           <p className="sticky-footer__copy">

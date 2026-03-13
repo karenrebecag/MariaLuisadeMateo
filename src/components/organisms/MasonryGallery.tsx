@@ -165,7 +165,7 @@ export function MasonryGallery() {
               className="relative h-44 w-44 overflow-hidden rounded-full ring-1 ring-neutral-200 dark:ring-neutral-700"
             >
               <Image
-                src="https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/maria-luisa-1.webp"
+                src="https://pub-62c41549a44642efbcd3f775bdb039b3.r2.dev/IMG_6123.webp"
                 alt="María Luisa de Mateo"
                 fill
                 sizes="176px"
